@@ -13,6 +13,7 @@ Pick winners against the spread.
 `npm install`
 
 Create mongo db and import all `avatars.json, games.json, picks.json, settings.json, teams.json, users.json` files from the `data` folder
+
 Name of collections should be `avatars, games, picks, settings, teams, users`
 
 In `server.js` file change `mongoose.connect('localhost:27017/db_name_here');` to point to your mongo db
