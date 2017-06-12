@@ -1,6 +1,6 @@
 # Spread
 
-[Demo](https://ldn-spread.herokuapp.com/signin)
+[Demo https://ldn-spread.herokuapp.com/signin](https://ldn-spread.herokuapp.com/signin)
 
 Pick winners against the spread.
 
