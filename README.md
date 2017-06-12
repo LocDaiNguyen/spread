@@ -21,5 +21,4 @@ In `.env` change `SECRET_KEY, WEBSITE_URL, EMAIL, EMAIL_PASSWORD, EMAIL_SERVICE`
 
 ## Build
 
-Run `ng build --watch` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-And run `node server.js` or `nodemon server.js` if you have `nodemon` installed
+Run `ng build --watch` and `node server.js` or `nodemon server.js` if you have `nodemon` installed
