@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col s12">
+
+     <div class="mar-top-2">
+        <a materialize="dropdown" class='dropdown-button btn btn-expand change-week grey darken-3' href='#' data-activates='week-selector'>Change Week</a>
+        <ul id='week-selector' class='dropdown-content'>
+          <li><a [routerLink]="['/user-picks', 1]" class="black-text">Week 1</a></li>
+          <li><a [routerLink]="['/user-picks', 2]" class="black-text">Week 2</a></li>
+          <li><a [routerLink]="['/user-picks', 3]" class="black-text">Week 3</a></li>
+          <li><a [routerLink]="['/user-picks', 4]" class="black-text">Week 4</a></li>
+          <li><a [routerLink]="['/user-picks', 5]" class="black-text">Week 5</a></li>
+          <li><a [routerLink]="['/user-picks', 6]" class="black-text">Week 6</a></li>
+          <li><a [routerLink]="['/user-picks', 7]" class="black-text">Week 7</a></li>
+          <li><a [routerLink]="['/user-picks', 8]" class="black-text">Week 8</a></li>
+          <li><a [routerLink]="['/user-picks', 9]" class="black-text">Week 9</a></li>
+          <li><a [routerLink]="['/user-picks', 10]" class="black-text">Week 10</a></li>
+          <li><a [routerLink]="['/user-picks', 11]" class="black-text">Week 11</a></li>
+          <li><a [routerLink]="['/user-picks', 12]" class="black-text">Week 12</a></li>
+          <li><a [routerLink]="['/user-picks', 13]" class="black-text">Week 13</a></li>
+          <li><a [routerLink]="['/user-picks', 14]" class="black-text">Week 14</a></li>
+          <li><a [routerLink]="['/user-picks', 15]" class="black-text">Week 15</a></li>
+          <li><a [routerLink]="['/user-picks', 16]" class="black-text">Week 16</a></li>
+          <li><a [routerLink]="['/user-picks', 17]" class="black-text">Week 17</a></li>
+          <li><a [routerLink]="['/user-picks', 18]" class="black-text">Week 18</a></li>
+       </ul>
+     </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <ng-container *ngIf="userInfoPicksVM?.length > 0">
+    <ng-container *ngFor="let user of userInfoPicksVM; trackBy: trackUserInfoPicks">
+      <div class="col s12 m6">
+    
+        <app-up-user
+          [user]="user"
+        ></app-up-user>
+    
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <div class="col s12">
+    
+    <app-no-data
+      *ngIf="noData"
+      [errorMsg]="'Please add settings, teams and games to populate this page.'">
+    </app-no-data>
+    
+    <app-error-server *ngIf="error"></app-error-server>
+
+  </div>
+</div>

@@ -1,0 +1,150 @@
+/*===========================================================================*/
+/* STANDING */
+/*===========================================================================*/
+    .standing {
+      padding: 0;
+      list-style: none;
+      border-bottom: 1px solid #eee;
+    }
+    .standing.last {
+      border-bottom: 0;
+    }
+
+      .standing li {
+        float: left;
+      }
+
+      .standing .user-rank {
+        width: 3.75rem;
+        padding-left: 0;
+        font-size: 1.5rem;
+        line-height: 6rem;
+        text-align: center;
+      }
+
+      .standing .user-image-wrapper {
+        position: relative;
+        width: 4rem;
+        height: 5rem;
+        margin: 0 auto;
+      }
+
+        .standing .user-image-wrapper .user-image {
+          position: relative;
+          width: 4rem;
+          margin: 1rem 0;
+          background: #eee;
+          -webkit-border-radius: 50%;
+                  border-radius: 50%;
+        }
+
+        .standing .user-image-wrapper .user-trophy {
+          position: absolute;
+          bottom: 0;
+          right: -.5rem;
+          width: 2rem;
+        }
+
+      .standing .user-name-record {
+        padding: 1.5rem 0 0 1.5rem;
+      }
+
+        .standing .user-name-record .user-name {
+          display: block;
+          width: 4.25rem;
+          color: #d50000;
+          font-size: 1.5rem;
+          line-height: 1;
+          white-space: nowrap;
+        }
+
+        .standing .user-name-record .user-record {
+          display: block;
+          color: #888;
+          white-space: nowrap;
+        }
+
+      .standing .user-rank-diff {
+        display: block;
+        float: right;
+        width: 1.75rem;
+        font-size: .75rem;
+        line-height: 6rem;
+        text-align: center;
+      }
+
+        .standing .user-rank-diff .positive {
+          color: #33ff33;
+        }
+        .standing .user-rank-diff .negative {
+          color: #ff3333;
+        }
+        .standing .user-rank-diff .same {
+          color: orange;
+        }
+
+      .standing .user-points {
+        display: block;
+        float: right;
+        width: 5.5rem;
+        font-size: 1.5rem;
+        line-height: 6rem;
+        text-align: center;
+      }
+
+
+  @media only screen and (max-width: 24.1875em) {
+
+    .standing {
+      margin-bottom: .5rem;
+    }
+
+      .standing .user-rank {
+        width: 2.75rem;
+        padding-left: 0;
+        font-size: 1.25rem;
+        line-height: 5rem;
+      }
+
+      .standing .user-image-wrapper {
+        width: 3rem;
+        height: 4rem;
+      }
+
+        .standing .user-image-wrapper .user-image {
+          width: 3rem;
+          margin: 1rem 0rem;
+        }
+
+        .standing .user-image-wrapper .user-trophy {
+          width: 1.5rem;
+        }
+
+      .standing .user-name-record {
+        padding: 1.375rem 0 0 1rem;
+      }
+
+        .standing .user-name-record .user-name {
+          font-size: 1.25rem;
+          line-height: 1.25;
+        }
+
+        .standing .user-name-record .user-record {
+          font-size: .75rem;
+        }
+
+      .standing .user-rank-diff {
+        width: 1.75rem;
+        font-size: .75rem;
+        line-height: 5rem;
+      }
+
+      .standing .user-points {
+        width: 4.25rem;
+        font-size: 1.5rem;
+        line-height: 5rem;
+      }
+  }
+/*===========================================================================*/
+/* END STANDING */
+/*===========================================================================*/

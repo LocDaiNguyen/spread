@@ -1,0 +1,178 @@
+/*===========================================================================*/
+/* USER PICKS ALL */
+/*===========================================================================*/
+.user-picks-all {
+  margin-bottom: 1rem;
+}
+
+  .user-picks-all-title {
+    padding: .75rem 0;
+    background: #ddd;
+    text-align: center;
+  }
+
+  .user-picks-all .team-info {
+    margin: 0;
+    padding: 0;
+    background: white;
+    list-style: none;
+  }
+
+  .user-picks-all .team-info + .team-info {
+    border-top: .0625rem solid #eee;
+  }
+
+    .user-picks-all .team-info li {
+      float: left;
+    }
+
+    /*.user-picks-all .team-info .away-team-logo {
+      width: 4.375rem;
+      height: 4.9375rem;
+    }*/
+
+      .user-picks-all .team-info .team-logo img {
+        display: block;
+        width: 3rem;
+        margin: 1.25rem 0 1.125rem 1.5rem;
+      }
+
+    .user-picks-all .team-info .team-name {
+      width: 8rem;
+      padding: 1.5rem 0 1.5rem 1.5rem;
+      text-transform: uppercase;
+    }
+
+      .user-picks-all .team-info .team-name .city {
+        display: block;
+        color: #888;
+        font-size: .75rem;
+        line-height: 1;
+      }
+
+      .user-picks-all .team-info .team-name .name {
+        display: block;
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+
+      .user-picks-all .team-info .team-name .abbr {
+        display: none;
+        font-size: 1.25rem;
+        line-height: 1.75;
+      }
+
+    .user-picks-all .team-info .team-spread,
+    .user-picks-all .team-info .week-num {
+      width: 6rem;
+      margin: 0;
+      padding: 0;
+      color: #888;
+      font-size: 1.5rem;
+      line-height: 5rem;
+      text-align: center;
+    }
+    .user-picks-all .team-info.win .team-spread,
+    .user-picks-all .team-info.win .week-num,
+    .user-picks-all .team-info.win .pick-result {
+        color: #33ff33;
+    }
+    .user-picks-all .team-info.loss .team-spread,
+    .user-picks-all .team-info.loss .week-num,
+    .user-picks-all .team-info.loss .pick-result {
+      color: #ee0000;
+    }
+    .user-picks-all .team-info.push .team-spread,
+    .user-picks-all .team-info.push .week-num,
+    .user-picks-all .team-info.push .pick-result {
+      color: orange;
+    }
+
+    .user-picks-all .team-info .pick-result {
+      float: right;
+      width: 5rem;
+      margin: 0;
+      padding: 0;
+      font-size: 1.25rem;
+      line-height: 5rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+@media only screen and (max-width: 24.1875em) {
+
+    .user-picks-all .team-info .team-name {
+      width: 5rem;
+    }
+
+      .user-picks-all .team-info .team-name .city,
+      .user-picks-all .team-info .team-name .name {
+        display: none;
+      }
+
+      .user-picks-all .team-info .team-name .abbr {
+        display: block;
+      }
+
+    .user-picks-all .team-info .team-spread,
+    .user-picks-all .team-info .week-num {
+      width: 3rem;
+      margin: 0;
+      padding: 0 0 .75rem 0;
+      font-size: .75rem;
+      line-height: 5rem;
+    }
+    .user-picks-all .team-info .team-spread {
+      margin-left: 0;
+    }
+
+    .user-picks-all .team-info .pick-result {
+      display: none;
+      /*float: left;
+      width: 3rem;
+      margin: 0;
+      padding: 0 0 .75rem 0;
+      font-size: .75rem;
+      line-height: 1;*/
+    }
+}
+
+@media only screen and (min-width: 24.25em) and (max-width: 30em) {
+
+    .user-picks-all .team-info .team-name {
+      width: 5rem;
+    }
+
+      .user-picks-all .team-info .team-name .city,
+      .user-picks-all .team-info .team-name .name {
+        display: none;
+      }
+
+      .user-picks-all .team-info .team-name .abbr {
+        display: block;
+      }
+
+    .user-picks-all .team-info .team-spread,
+    .user-picks-all .team-info .week-num {
+      width: 3.5rem;
+      margin: 0;
+      padding: 0 0 .75rem 0;
+      font-size: .75rem;
+      line-height: 5rem;
+    }
+    .user-picks-all .team-info .team-spread {
+      margin-left: 0;
+    }
+
+    .user-picks-all .team-info .pick-result {
+      float: left;
+      width: 4rem;
+      margin: 0;
+      padding: 0 0 .75rem 0;
+      font-size: .75rem;
+      line-height: 5rem;
+    }
+}
+/*===========================================================================*/
+/* END USER PICKS ALL */
+/*===========================================================================*/

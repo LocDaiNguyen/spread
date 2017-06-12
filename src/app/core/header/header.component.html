@@ -1,0 +1,57 @@
+<div class="container">
+  <a materialize="sideNav" [materializeParams]="[{edge:'left'}]" href="#" data-activates="slide-out" class="button-collapse top-nav full show-on-large">
+    <i class="material-icons">menu</i>
+  </a>
+</div>
+
+<nav>
+  <div class="nav-wrapper">
+    <a routerLink="/make-picks" class="brand-logo center">Angular Spread</a>
+  </div>
+  <ul id="slide-out" class="side-nav grey darken-4">
+    <li class="red accent-4 center-align pad-h mar-bot-1">
+      <!--<a routerLink="/make-picks" class="waves-effect waves-red white-text">Angular Spread</a>-->
+      <p class="white-text">Menu</p>
+    </li>
+    <ng-container *ngIf="!authService.isAuthenticated()">
+      <li class="bold"><a routerLink="signin" class="waves-effect waves-red white-text">Sign In</a></li>
+      <li class="bold"><a routerLink="signup" class="waves-effect waves-red white-text">Sign Up</a></li>
+      <li class="bold"><a routerLink="about" class="waves-effect waves-red white-text">About</a></li>
+    </ng-container>
+    <ng-container *ngIf="authService.isAuthenticated() && authService.isVerify() && authService.isActive()">
+      <li class="bold"><a routerLink="make-picks" class="waves-effect waves-red white-text">Make Picks</a></li>
+      <li class="bold"><a routerLink="user-picks" class="waves-effect waves-red white-text">User Picks</a></li>
+      <li class="bold"><a routerLink="standings" class="waves-effect waves-red white-text">Standings</a></li>
+      <li class="bold"><a routerLink="pick-distributions" class="waves-effect waves-red white-text">Pick Distributions</a></li>
+      <li class="bold"><a routerLink="stats" class="waves-effect waves-red white-text">Stats</a></li>
+      <li><a class="subheader white-text">Personal Settings</a></li>
+      <li class="bold"><a routerLink="personal-settings/account" class="waves-effect waves-red white-text indent">Account</a></li>
+      <li class="bold"><a routerLink="personal-settings/avatar" class="waves-effect waves-red white-text indent">Avatar</a></li>
+      <li class="bold"><a routerLink="personal-settings/password" class="waves-effect waves-red white-text indent">Password</a></li>
+      <!--<li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header waves-effect waves-red white-text">Personal Settings</a>
+            <div class="collapsible-body grey darken-4">
+              <ul>
+                <li><a routerLink="personal-settings/account" class="waves-effect waves-red white-text">Account</a></li>
+                <li><a routerLink="personal-settings/avatar" class="waves-effect waves-red white-text">Avatar</a></li>
+                <li><a routerLink="personal-settings/password" class="waves-effect waves-red white-text">Password</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>-->
+    </ng-container>
+    <ng-container *ngIf="authService.isAuthenticated() && authService.isAdmin()">
+      <li class="bold"><a routerLink="edit-scores" class="waves-effect waves-red white-text">Edit Scores</a></li>
+      <li class="bold"><a routerLink="edit-spreads" class="waves-effect waves-red white-text">Edit Spreads</a></li>
+      <li class="bold"><a routerLink="settings" class="waves-effect waves-red white-text">Settings</a></li>
+      <li class="bold"><a routerLink="users" class="waves-effect waves-red white-text">Users</a></li>
+    </ng-container>
+    <ng-container *ngIf="authService.isAuthenticated()">
+      <li class="bold"><a routerLink="about" class="waves-effect waves-red white-text">About</a></li>
+      <li class="bold"><a routerLink="signin" (click)="logout()" class="waves-effect waves-red white-text">Logout</a></li>
+    </ng-container>
+  </ul>
+</nav>

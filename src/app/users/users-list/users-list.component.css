@@ -1,0 +1,86 @@
+/*===========================================================================*/
+/* USERS LIST */
+/*===========================================================================*/
+  .users-list {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background: white;
+  }
+
+    .single-user {
+      margin: 0;
+      padding: 0;
+      border-bottom: 1px solid #eee;
+    }
+    .single-user.no-border {
+      border-bottom: 0;
+    }
+
+      .user-info li {
+        float: left;
+        list-style: none;
+      }
+
+        .user-info .user-avatar img {
+          width: 4rem;
+          height: 4rem;
+          margin: 1rem;
+          background: #f3f3f3;
+          -webkit-border-radius: 50%;
+                  border-radius: 50%;
+        }
+
+      .user-info .user-username {
+        width: 20rem;
+        margin-top: 1rem;
+        font-size: 1.5rem;
+      }
+
+        .user-info .user-username .name {
+          display: block;
+        }
+
+        .user-info .user-username .info {
+          display: block;
+          font-size: 1rem;
+        }
+
+      .user-switch {
+        padding-top: 1.25rem;
+      }
+
+
+  @media only screen and (min-width: 62.0625em) {
+      .actions {
+        padding-top: 6rem;
+      }
+  }
+
+  @media only screen and (max-width: 62em) {
+
+    .user-info {
+      text-align: center;
+    }
+
+      .user-info li {
+        float: none;
+        list-style: none;
+      }
+
+      .user-info .user-username {
+        width: 100%;
+        margin-top: .25rem;
+      }
+
+      .user-switch {
+        text-align: center;
+      }
+
+      .actions {
+        padding: 2rem 0;
+        text-align: center;
+      }
+  }
+/*===========================================================================*/
+/* END USERS LIST */
+/*===========================================================================*/

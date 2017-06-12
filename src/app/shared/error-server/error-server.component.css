@@ -1,0 +1,29 @@
+/*===========================================================================*/
+/* ERROR */
+/*===========================================================================*/
+  .error {
+    margin-top: 1rem;
+    padding: 3rem 1rem;
+    border-left: .375rem solid #d50000;
+    background: white;
+    text-align: center;
+  }
+
+    .error .title {
+      margin-bottom: 1rem;
+      color: #d50000;
+    }
+
+      .error .error-container i {
+        position: relative;
+        top: .1875rem;
+        color: #d50000;
+      }
+      .error .error-container span {
+        position: relative;
+        top: -.25rem;
+        color: #d50000;
+      }
+/*===========================================================================*/
+/* END ERROR */
+/*===========================================================================*/

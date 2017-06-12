@@ -1,0 +1,20 @@
+<li class="home-team-logo">
+              <img
+                src="../../assets/logo/{{pickDist.homeTeam | lowercase}}smr.jpg"
+                [alt]="pickDist.homeTeam"
+              />
+            </li>
+            <li class="home-team-name">
+              <span class="city">{{pickDist.homeCity}}</span>
+              <span class="name">{{pickDist.homeName}}</span>
+              <span class="abbr">{{pickDist.homeTeam}}</span>
+            </li>
+            <li
+              [ngClass]="{
+                win: pickDist.homeResult === 'win',
+                loss: pickDist.homeResult === 'loss',
+                push: pickDist.homeResult === 'push'
+              }"
+              class="home-team-spread">
+              {{pickDist.homeSpreadDisplay}}
+            </li>

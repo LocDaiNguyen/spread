@@ -1,0 +1,21 @@
+<div class="stats-user-info">
+  <img src="../../assets/avatar/{{avatar | lowercase}}.jpg" alt="" class="user-image">
+  <h2 class="user-name">{{userName}}</h2>
+  <ul class="user-trophy">
+    <li class="no-trophy">Has No Trophy Yet!</li>
+  </ul>
+</div>
+<div class="row collapse">
+  <div class="col s6">
+    <div class="user-standing-point standing">
+      <span class="u-data">{{rank}}{{rankText}}</span>
+      <span class="u-label">standing</span>
+    </div>
+  </div>
+  <div class="col s6">
+    <div class="user-standing-point points">
+      <span class="u-data">{{points}}</span>
+      <span class="u-label">points</span>
+    </div>
+  </div>
+</div>

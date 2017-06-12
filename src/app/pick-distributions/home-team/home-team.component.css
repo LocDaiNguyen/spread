@@ -1,0 +1,116 @@
+/*===========================================================================*/
+/* PICK DISTS HOME TEAM */
+/*===========================================================================*/
+        li {
+          float: right;
+        }
+
+          .home-team-logo img {
+            display: block;
+            width: 3rem;
+            margin: 1rem 1rem 1rem 0;
+          }
+
+        .home-team-spread {
+          display: block;
+          width: 3.75rem;
+          font-size: 1.5rem;
+          line-height: 4.625rem;
+          text-align: center;
+          text-transform: uppercase;
+        }
+        .home-team-spread.win {
+          color: #33ff33;
+        }
+        .home-team-spread.loss {
+          color: #ee0000;
+        }
+        .home-team-spread.push {
+          color: orange;
+        }
+
+        .home-team-name {
+          width: 10rem;
+          padding: 1.5rem 1.5rem 1.5rem 0;
+          text-transform: uppercase;
+          text-align: right;
+        }
+
+          .home-team-name .city {
+            display: block;
+            color: #888;
+            font-size: .75rem;
+            line-height: 1;
+          }
+
+          .home-team-name .name {
+            display: block;
+            font-size: 1.25rem;
+            line-height: 1;
+          }
+
+          .home-team-name .abbr {
+            display: none;
+            font-size: 1.25rem;
+            line-height: 1.75;
+          }
+
+
+  @media only screen and (min-width: 31.25em) and (max-width: 37.5em) {
+
+        .home-team-name {
+          width: 5rem;
+        }
+
+          .home-team-name .city,
+          .home-team-name .name {
+            display: none;
+          }
+
+          .home-team-name .abbr {
+            display: block;
+          }
+
+          .home-team-spread {
+            width: 5rem;
+          }
+  }
+
+  @media only screen and (max-width: 31.1875em) {
+
+        .home-team-name {
+          width: 0;
+        }
+
+          .home-team-name .city,
+          .home-team-name .name {
+            display: none;
+          }
+
+          .home-team-spread {
+            width: 5rem;
+          }
+  }
+
+  @media only screen and (max-width: 24.1875em) {
+
+        /*.home-team-logo {
+          width: 3rem;
+          height: 4rem;
+        }
+
+          .home-team-logo img {
+            width: 3rem;
+            margin: 1rem 0rem;
+          }*/
+
+        .home-team-spread {
+          width: 3rem;
+          font-size: 1.25rem;
+          line-height: 3;
+        }
+
+  }
+/*===========================================================================*/
+/* END PICK DISTS HOME TEAM */
+/*===========================================================================*/

@@ -1,0 +1,40 @@
+.about {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25rem;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.about .title {
+  margin-top: 4rem;
+}
+
+.about .desc {
+  margin-bottom: 4rem;
+}
+
+.about .author {
+  margin-bottom: 2rem;
+}
+
+.about .list-inline {
+  margin-bottom: 4rem;
+  padding-left: 0;
+  margin-left: -5px;
+  list-style: none;
+}
+
+.about .list-inline>li {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.about .list-inline>li>a {
+  color: #d50000;
+}

@@ -1,0 +1,22 @@
+<div class="user-picks">
+        
+        <ul class="user-info clearfix">
+          <li class="user-image-wrapper">
+            <img
+              [src]="'../../assets/avatar/' + user.avatar + '.jpg'"
+              [alt]="user.avatar"
+              class="user-image"
+            />
+          </li>
+          <li class="user-name-record">
+            <span class="user-name">{{user.userName}}</span>
+            <span class="user-record">{{user.wins}}-{{user.losses}}-{{user.pushs}}</span>
+          </li>
+          <li class="user-points">{{user.points}}</li>
+        </ul>
+        
+        <ng-container *ngFor="let pick of user.picks; trackBy: trackUserPicks">
+          <app-pick [pick]="pick"></app-pick>
+        </ng-container>
+
+      </div>

@@ -1,0 +1,750 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*===========================================================================*/
+/* HTML
+/*===========================================================================*/
+  html {
+    font-weight: 300;
+    color: #444;
+  }
+
+  body {
+    background: #f7f7f7;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+  }
+
+  p {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+  }
+
+  img.round-m {
+    width: 3rem;
+    border-radius: 50%;
+  }
+/*===========================================================================*/
+/* END HTML
+/*===========================================================================*/
+
+
+
+
+/*===========================================================================*/
+/* ROW
+/*===========================================================================*/
+.row.collapse .col {
+  padding: 0;
+}
+/*===========================================================================*/
+/* END ROW
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* FORMS MISC
+/*===========================================================================*/
+  input:not([type]):focus:not([readonly]),
+  input[type=text]:focus:not([readonly]),
+  input[type=password]:focus:not([readonly]),
+  input[type=email]:focus:not([readonly]),
+  input[type=url]:focus:not([readonly]),
+  input[type=time]:focus:not([readonly]),
+  input[type=date]:focus:not([readonly]),
+  input[type=datetime]:focus:not([readonly]),
+  input[type=datetime-local]:focus:not([readonly]),
+  input[type=tel]:focus:not([readonly]),
+  input[type=number]:focus:not([readonly]),
+  input[type=search]:focus:not([readonly]),
+  textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #d50000;
+    box-shadow: 0 1px 0 0 #d50000;
+  }
+
+  input:not([type]):focus:not([readonly])+label,
+  input[type=text]:focus:not([readonly])+label,
+  input[type=password]:focus:not([readonly])+label,
+  input[type=email]:focus:not([readonly])+label,
+  input[type=url]:focus:not([readonly])+label,
+  input[type=time]:focus:not([readonly])+label,
+  input[type=date]:focus:not([readonly])+label,
+  input[type=datetime]:focus:not([readonly])+label,
+  input[type=datetime-local]:focus:not([readonly])+label,
+  input[type=tel]:focus:not([readonly])+label,
+  input[type=number]:focus:not([readonly])+label,
+  input[type=search]:focus:not([readonly])+label,
+  textarea.materialize-textarea:focus:not([readonly])+label {
+    color: #d50000;
+  }
+
+  .input-error-msg {
+    position: relative;
+    top: -1rem;
+    color: #f44336;
+  }
+
+  [type="radio"]:checked+label:after,
+  [type="radio"].with-gap:checked+label:after {
+    background: #d50000;
+  }
+  [type="radio"]:checked+label:after,
+  [type="radio"].with-gap:checked+label:before,
+  [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #d50000;
+  }
+
+  .switch label input[type=checkbox]:checked+.lever {
+    background: #f44336;
+  }
+  .switch label input[type=checkbox]:checked+.lever:after {
+    background: #d50000;
+  }
+  .switch label .lever:after {
+    box-shadow: none;
+  }
+
+  .btn,
+  .btn-large,
+  .btn-flat,
+  .btn-floating {
+    background: #d50000 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .btn.white,
+  .btn-large.white,
+  .btn-flat.white,
+  .btn-floating.white {
+    background: #ffffff !important;
+  }
+
+  .btn-stick-bot {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    /*padding-left: 300px;*/
+  }
+
+  .btn-expand {
+    width: 100%;
+  }
+
+  .btn.change-week {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .modal {
+    padding: 2rem;
+  }
+  .modal .modal-footer .btn,
+  .modal .modal-footer .btn-large,
+  .modal .modal-footer .btn-flat {
+    float: none;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .btn-stick-bot {
+      padding-left: 0;
+    }
+  }
+/*===========================================================================*/
+/* END FORMS MISC
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* NAV
+/*===========================================================================*/
+  nav {
+    background: #d50000 !important;
+  }
+
+  nav .brand-logo {
+    font-size: 1.5rem;
+  }
+/*===========================================================================*/
+/* END NAV
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* SIDE NAV
+/*===========================================================================*/
+  @media only screen and (max-width: 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+    .btn-stick-bot {
+      padding-left: 0;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    a.button-collapse.top-nav {
+        left: 0 !important;
+    }
+  }
+
+  .side-nav a {
+    font-weight: 300;
+  }
+  #nav-mobile li.search {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 120px;
+      margin-top: 1px;
+      padding: 1px 0 0 0;
+      z-index: 2
+  }
+  #nav-mobile li.search:hover {
+      background: #fff
+  }
+  #nav-mobile li.search .search-wrapper {
+      margin: 0 12px;
+      transition: margin .25s ease
+  }
+  #nav-mobile li.search .search-wrapper.focused {
+      margin: 0
+  }
+  #nav-mobile li.search .search-wrapper input#search {
+      display: block;
+      font-size: 16px;
+      font-weight: 300;
+      width: 100%;
+      height: 45px;
+      margin: 0;
+      padding: 0 45px 0 15px;
+      border: 0
+  }
+  #nav-mobile li.search .search-wrapper input#search:focus {
+      outline: none
+  }
+  #nav-mobile li.search .search-wrapper i.material-icons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer
+  }
+  #nav-mobile li.search .search-results {
+      margin: 0;
+      border-top: 1px solid #e9e9e9;
+      background: #fff
+  }
+  #nav-mobile li.search .search-results a {
+      font-size: 12px;
+      white-space: nowrap
+  }
+  #nav-mobile li.search .search-results a:hover,
+  #nav-mobile li.search .search-results a.focused {
+      background: #eee;
+      outline: none
+  }
+  a.button-collapse.top-nav {
+      position: absolute;
+      text-align: center;
+      height: 48px;
+      width: 48px;
+      left: 0;
+      top: 10px;
+      float: none;
+      margin-left: 1.5rem;
+      color: #fff;
+      font-size: 36px;
+      z-index: 2
+  }
+  a.button-collapse.top-nav i {
+      font-size: 32px
+  }
+  .side-nav .collapsible-header,
+  .side-nav.fixed .collapsible-header {
+    padding: 0 2rem;
+  }
+  @media only screen and (max-width: 992px) {
+    .side-nav .collapsible-header,
+    .side-nav.fixed .collapsible-header {
+      padding: 0 1rem;
+    }
+  }
+  .collapsible-body {
+    padding: .5rem;
+  }
+  @media only screen and (max-width: 600px) {
+      a.button-collapse.top-nav {
+          left: 5%
+      }
+  }
+/*===========================================================================*/
+/* END SIDE NAV
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* CLEAR FIX
+/*===========================================================================*/
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+/*===========================================================================*/
+/* END CLEAR FIX
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* TITLE
+/*===========================================================================*/
+/**
+ * Title
+ *
+ * Used to display section title.
+ *
+ * ----------------------------------------------------------------------
+ *                                 TITLE
+ *
+ *
+ * ----------------------------------------------------------------------
+ *
+ * Pages might be found in - league-home-season.html
+ *
+ **/
+
+/* -------------------- XSMALL VERSION -------------------- */
+.title-xs-center {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.title-xs {
+  font-size: 1.5rem;
+}
+
+/* -------------------- SMALL VERSION -------------------- */
+.title-s-center {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.title-s {
+  font-size: 2rem;
+}
+
+/* -------------------- MEDIUM VERSION -------------------- */
+.title-m-center {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.title-m {
+  font-size: 3rem;
+}
+
+
+/* -------------------- SCREENS 0px TO 384px -------------------- */
+@media only screen and (max-width: 24.1875em) {
+
+  .title-xs,
+  .title-xs-center {
+    font-size: 1.25rem;
+  }
+  .title-s,
+  .title-s-center {
+    font-size: 1.625rem;
+  }
+  .title-m,
+  .title-m-center {
+    font-size: 2.375rem;
+  }
+
+  .title-xs.mar-bot-5,
+  .title-xs-center.mar-bot-5,
+  .title-s.mar-bot-5,
+  .title-s-center.mar-bot-5,
+  .title-m.mar-bot-5,
+  .title-m-center.mar-bot-5 {
+    margin-bottom: 2.5rem;
+  }
+  .title-xs.mar-bot-4,
+  .title-xs-center.mar-bot-4,
+  .title-s.mar-bot-4,
+  .title-s-center.mar-bot-4,
+  .title-m.mar-bot-4,
+  .title-m-center.mar-bot-4 {
+    margin-bottom: 2rem;
+  }
+  .title-xs.mar-bot-3,
+  .title-xs-center.mar-bot-3,
+  .title-s.mar-bot-3,
+  .title-s-center.mar-bot-3,
+  .title-m.mar-bot-3,
+  .title-m-center.mar-bot-3 {
+    margin-bottom: 1.5rem;
+  }
+  .title-xs.mar-bot-2,
+  .title-xs-center.mar-bot-2,
+  .title-s.mar-bot-2,
+  .title-s-center.mar-bot-2,
+  .title-m.mar-bot-2,
+  .title-m-center.mar-bot-2 {
+    margin-bottom: 1rem;
+  }
+
+}
+
+/* -------------------- SCREENS 385px TO 640px -------------------- */
+@media only screen and (min-width: 24.0625em) and (max-width: 40em) {
+
+  .title-s,
+  .title-s-center {
+    font-size: 1.8125rem;
+  }
+  .title-m,
+  .title-m-center {
+    font-size: 2.75rem;
+  }
+
+  .title-xs.mar-bot-5,
+  .title-xs-center.mar-bot-5,
+  .title-s.mar-bot-5,
+  .title-s-center.mar-bot-5,
+  .title-m.mar-bot-5,
+  .title-m-center.mar-bot-5 {
+    margin-bottom: 3.75rem;
+  }
+  .title-xs.mar-bot-4,
+  .title-xs-center.mar-bot-4,
+  .title-s.mar-bot-4,
+  .title-s-center.mar-bot-4,
+  .title-m.mar-bot-4,
+  .title-m-center.mar-bot-4 {
+    margin-bottom: 3rem;
+  }
+  .title-xs.mar-bot-3,
+  .title-xs-center.mar-bot-3,
+  .title-s.mar-bot-3,
+  .title-s-center.mar-bot-3,
+  .title-m.mar-bot-3,
+  .title-m-center.mar-bot-3 {
+    margin-bottom: 2.25rem;
+  }
+
+}
+/*===========================================================================*/
+/* END TITLE
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* ALERT MESSAGE
+/*===========================================================================*/
+.alert-message i {
+  position: relative;
+  top: .1875rem;
+}
+.alert-message span {
+  position: relative;
+  top: -.25rem;
+}
+/*===========================================================================*/
+/* END ALERT MESSAGE
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* TEAM COLOURS
+/*===========================================================================*/
+  .tc-ari { background: #ab0b34; color: #ab0b34; }
+  .tc-atl { background: #c6243e; color: #c6243e; }
+  .tc-bal { background: #2d2f8f; color: #2d2f8f; }
+  .tc-buf { background: #004b8b; color: #004b8b; }
+  .tc-car { background: #0088CE; color: #0088CE; }
+  .tc-chi { background: #f36422; color: #f36422; }
+  .tc-cin { background: #f04e22; color: #f04e22; }
+  .tc-cle { background: #f34621; color: #f34621; }
+  .tc-dal { background: #00295b; color: #00295b; }
+  .tc-den { background: #f36422; color: #f36422; }
+  .tc-det { background: #016db1; color: #016db1; }
+  .tc-gb { background: #29433a; color: #29433a; }
+  .tc-hou { background: #00113b; color: #00113b; }
+  .tc-ind { background: #023976; color: #023976; }
+  .tc-jax { background: #006778; color: #006778; }
+  .tc-kc { background: #e5173a; color: #e5173a; }
+  .tc-mia { background: #118d97; color: #118d97; }
+  .tc-min { background: #4e2880; color: #4e2880; }
+  .tc-ne { background: #00295b; color: #00295b; }
+  .tc-no { background: #a18a5b; color: #a18a5b; }
+  .tc-nyg { background: #192F6B; color: #192F6B; }
+  .tc-nyj { background: #29433a; color: #29433a; }
+  .tc-oak { background: #C4C8CB; color: #C4C8CB; }
+  .tc-phi { background: #003B48; color: #003B48; }
+  .tc-pit { background: #fec20f; color: #fec20f; }
+  .tc-sd { background: #fec20f; color: #fec20f; }
+  .tc-sea { background: #69BE28; color: #69BE28; }
+  .tc-sf { background: #c6243e; color: #c6243e; }
+  .tc-la { background: #00295b; color: #00295b; }
+  .tc-tb { background: #d40707; color: #d40707; }
+  .tc-ten { background: #4696c6; color: #4696c6; }
+  .tc-was { background: #773141; color: #773141; }
+/*===========================================================================*/
+/* TEAM COLOURS
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* MARGIN
+/*===========================================================================*/
+  .mar-0 { margin: 0; }
+  .mar-h { margin: .5rem; }
+  .mar-1 { margin: 1rem; }
+  .mar-1h { margin: 1.5rem; }
+  .mar-2 { margin: 2rem; }
+  .mar-2h { margin: 2.5rem; }
+  .mar-3 { margin: 3rem; }
+  .mar-3h { margin: 3.5rem; }
+  .mar-4 { margin: 4rem; }
+  .mar-4h { margin: 4.5rem; }
+  .mar-5 { margin: 5rem; }
+  .mar-5h { margin: 5.5rem; }
+  .mar-6 { margin: 6rem; }
+  .mar-6h { margin: 6.5rem; }
+
+  .mar-top-0 { margin-top: 0; }
+  .mar-top-h { margin-top: .5rem; }
+  .mar-top-1 { margin-top: 1rem; }
+  .mar-top-1h { margin-top: 1.5rem; }
+  .mar-top-2 { margin-top: 2rem; }
+  .mar-top-2h { margin-top: 2.5rem; }
+  .mar-top-3 { margin-top: 3rem; }
+  .mar-top-3h { margin-top: 3.5rem; }
+  .mar-top-4 { margin-top: 4rem; }
+  .mar-top-4h { margin-top: 4.5rem; }
+  .mar-top-5 { margin-top: 5rem; }
+  .mar-top-5h { margin-top: 5.5rem; }
+  .mar-top-6 { margin-top: 6rem; }
+  .mar-top-6h { margin-top: 6.5rem; }
+
+  .mar-bot-0 { margin-bottom: 0; }
+  .mar-bot-h { margin-bottom: .5rem; }
+  .mar-bot-1 { margin-bottom: 1rem; }
+  .mar-bot-1h { margin-bottom: 1.5rem; }
+  .mar-bot-2 { margin-bottom: 2rem; }
+  .mar-bot-2h { margin-bottom: 2.5rem; }
+  .mar-bot-3 { margin-bottom: 3rem; }
+  .mar-bot-3h { margin-bottom: 3.5rem; }
+  .mar-bot-4 { margin-bottom: 4rem; }
+  .mar-bot-4h { margin-bottom: 4.5rem; }
+  .mar-bot-5 { margin-bottom: 5rem; }
+  .mar-bot-5h { margin-bottom: 5.5rem; }
+  .mar-bot-6 { margin-bottom: 6rem; }
+  .mar-bot-6h { margin-bottom: 6.5rem; }
+
+  .mar-tb-0 { margin-top: 0;       margin-bottom: 0; }
+  .mar-tb-h { margin-top: .5rem;   margin-bottom: .5rem; }
+  .mar-tb-1 { margin-top: 1rem;    margin-bottom: 1rem; }
+  .mar-tb-1h { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+  .mar-tb-2 { margin-top: 2rem;    margin-bottom: 2rem; }
+  .mar-tb-2h { margin-top: 2.5rem; margin-bottom: 2.5rem; }
+  .mar-tb-3 { margin-top: 3rem;    margin-bottom: 3rem; }
+  .mar-tb-3h { margin-top: 3.5rem; margin-bottom: 3.5rem; }
+  .mar-tb-4 { margin-top: 4rem;    margin-bottom: 4rem; }
+  .mar-tb-4h { margin-top: 4.5rem; margin-bottom: 4.5rem; }
+  .mar-tb-5 { margin-top: 5rem;    margin-bottom: 5rem; }
+  .mar-tb-5h { margin-top: 5.5rem; margin-bottom: 5.5rem; }
+  .mar-tb-6 { margin-top: 6rem;    margin-bottom: 6rem; }
+  .mar-tb-6h { margin-top: 6.5rem; margin-bottom: 6.5rem; }
+
+  .mar-left-0 { margin-left: 0; }
+  .mar-left-h { margin-left: .5rem; }
+  .mar-left-1 { margin-left: 1rem; }
+  .mar-left-1h { margin-left: 1.5rem; }
+  .mar-left-2 { margin-left: 2rem; }
+  .mar-left-2h { margin-left: 2.5rem; }
+  .mar-left-3 { margin-left: 3rem; }
+  .mar-left-3h { margin-left: 3.5rem; }
+  .mar-left-4 { margin-left: 4rem; }
+  .mar-left-4h { margin-left: 4.5rem; }
+  .mar-left-5 { margin-left: 5rem; }
+  .mar-left-5h { margin-left: 5.5rem; }
+  .mar-left-6 { margin-left: 6rem; }
+  .mar-left-6h { margin-left: 6.5rem; }
+
+  .mar-right-0 { margin-right: 0; }
+  .mar-right-h { margin-right: .5rem; }
+  .mar-right-1 { margin-right: 1rem; }
+  .mar-right-1h { margin-right: 1.5rem; }
+  .mar-right-2 { margin-right: 2rem; }
+  .mar-right-2h { margin-right: 2.5rem; }
+  .mar-right-3 { margin-right: 3rem; }
+  .mar-right-3h { margin-right: 3.5rem; }
+  .mar-right-4 { margin-right: 4rem; }
+  .mar-right-4h { margin-right: 4.5rem; }
+  .mar-right-5 { margin-right: 5rem; }
+  .mar-right-5h { margin-right: 5.5rem; }
+  .mar-right-6 { margin-right: 6rem; }
+  .mar-right-6h { margin-right: 6.5rem; }
+
+  .mar-lr-0 { margin-left: 0;       margin-right: 0; }
+  .mar-lr-h { margin-left: .5rem;   margin-right: .5rem; }
+  .mar-lr-1 { margin-left: 1rem;    margin-right: 1rem; }
+  .mar-lr-1h { margin-left: 1.5rem; margin-right: 1.5rem; }
+  .mar-lr-2 { margin-left: 2rem;    margin-right: 2rem; }
+  .mar-lr-2h { margin-left: 2.5rem; margin-right: 2.5rem; }
+  .mar-lr-3 { margin-left: 3rem;    margin-right: 3rem; }
+  .mar-lr-3h { margin-left: 3.5rem; margin-right: 3.5rem; }
+  .mar-lr-4 { margin-left: 4rem;    margin-right: 4rem; }
+  .mar-lr-4h { margin-left: 4.5rem; margin-right: 4.5rem; }
+  .mar-lr-5 { margin-left: 5rem;    margin-right: 5rem; }
+  .mar-lr-5h { margin-left: 5.5rem; margin-right: 5.5rem; }
+  .mar-lr-6 { margin-left: 6rem;    margin-right: 6rem; }
+  .mar-lr-6h { margin-left: 6.5rem; margin-right: 6.5rem; }
+/*===========================================================================*/
+/* END MARGIN
+/*===========================================================================*/
+
+
+
+
+
+/*===========================================================================*/
+/* PADDING
+/*===========================================================================*/
+  .pad-0 { padding: 0; }
+  .pad-h { padding: .5rem; }
+  .pad-1 { padding: 1rem; }
+  .pad-1h { padding: 1.5rem; }
+  .pad-2 { padding: 2rem; }
+  .pad-2h { padding: 2.5rem; }
+  .pad-3 { padding: 3rem; }
+  .pad-3h { padding: 3.5rem; }
+  .pad-4 { padding: 4rem; }
+  .pad-4h { padding: 4.5rem; }
+  .pad-5 { padding: 5rem; }
+  .pad-5h { padding: 5.5rem; }
+  .pad-6 { padding: 6rem; }
+  .pad-6h { padding: 6.5rem; }
+
+  .pad-top-0 { padding-top: 0; }
+  .pad-top-h { padding-top: .5rem; }
+  .pad-top-1 { padding-top: 1rem; }
+  .pad-top-1h { padding-top: 1.5rem; }
+  .pad-top-2 { padding-top: 2rem; }
+  .pad-top-2h { padding-top: 2.5rem; }
+  .pad-top-3 { padding-top: 3rem; }
+  .pad-top-3h { padding-top: 3.5rem; }
+  .pad-top-4 { padding-top: 4rem; }
+  .pad-top-4h { padding-top: 4.5rem; }
+  .pad-top-5 { padding-top: 5rem; }
+  .pad-top-5h { padding-top: 5.5rem; }
+  .pad-top-6 { padding-top: 6rem; }
+  .pad-top-6h { padding-top: 6.5rem; }
+
+  .pad-bot-0 { padding-bottom: 0; }
+  .pad-bot-h { padding-bottom: .5rem; }
+  .pad-bot-1 { padding-bottom: 1rem; }
+  .pad-bot-1h { padding-bottom: 1.5rem; }
+  .pad-bot-2 { padding-bottom: 2rem; }
+  .pad-bot-2h { padding-bottom: 2.5rem; }
+  .pad-bot-3 { padding-bottom: 3rem; }
+  .pad-bot-3h { padding-bottom: 3.5rem; }
+  .pad-bot-4 { padding-bottom: 4rem; }
+  .pad-bot-4h { padding-bottom: 4.5rem; }
+  .pad-bot-5 { padding-bottom: 5rem; }
+  .pad-bot-5h { padding-bottom: 5.5rem; }
+  .pad-bot-6 { padding-bottom: 6rem; }
+  .pad-bot-6h { padding-bottom: 6.5rem; }
+
+  .pad-tb-0 { padding-top: 0;       padding-bottom: 0; }
+  .pad-tb-h { padding-top: .5rem;   padding-bottom: .5rem; }
+  .pad-tb-1 { padding-top: 1rem;    padding-bottom: 1rem; }
+  .pad-tb-1h { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+  .pad-tb-2 { padding-top: 2rem;    padding-bottom: 2rem; }
+  .pad-tb-2h { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  .pad-tb-3 { padding-top: 3rem;    padding-bottom: 3rem; }
+  .pad-tb-3h { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .pad-tb-4 { padding-top: 4rem;    padding-bottom: 4rem; }
+  .pad-tb-4h { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+  .pad-tb-5 { padding-top: 5rem;    padding-bottom: 5rem; }
+  .pad-tb-5h { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+  .pad-tb-6 { padding-top: 6rem;    padding-bottom: 6rem; }
+  .pad-tb-6h { padding-top: 6.5rem; padding-bottom: 6.5rem; }
+
+  .pad-left-0 { padding-left: 0; }
+  .pad-left-h { padding-left: .5rem; }
+  .pad-left-1 { padding-left: 1rem; }
+  .pad-left-1h { padding-left: 1.5rem; }
+  .pad-left-2 { padding-left: 2rem; }
+  .pad-left-2h { padding-left: 2.5rem; }
+  .pad-left-3 { padding-left: 3rem; }
+  .pad-left-3h { padding-left: 3.5rem; }
+  .pad-left-4 { padding-left: 4rem; }
+  .pad-left-4h { padding-left: 4.5rem; }
+  .pad-left-5 { padding-left: 5rem; }
+  .pad-left-5h { padding-left: 5.5rem; }
+  .pad-left-6 { padding-left: 6rem; }
+  .pad-left-6h { padding-left: 6.5rem; }
+
+  .pad-right-0 { padding-right: 0; }
+  .pad-right-h { padding-right: .5rem; }
+  .pad-right-1 { padding-right: 1rem; }
+  .pad-right-1h { padding-right: 1.5rem; }
+  .pad-right-2 { padding-right: 2rem; }
+  .pad-right-2h { padding-right: 2.5rem; }
+  .pad-right-3 { padding-right: 3rem; }
+  .pad-right-3h { padding-right: 3.5rem; }
+  .pad-right-4 { padding-right: 4rem; }
+  .pad-right-4h { padding-right: 4.5rem; }
+  .pad-right-5 { padding-right: 5rem; }
+  .pad-right-5h { padding-right: 5.5rem; }
+  .pad-right-6 { padding-right: 6rem; }
+  .pad-right-6h { padding-right: 6.5rem; }
+
+  .pad-lr-0 { padding-left: 0;       padding-right: 0; }
+  .pad-lr-h { padding-left: .5rem;   padding-right: .5rem; }
+  .pad-lr-1 { padding-left: 1rem;    padding-right: 1rem; }
+  .pad-lr-1h { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .pad-lr-2 { padding-left: 2rem;    padding-right: 2rem; }
+  .pad-lr-2h { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .pad-lr-3 { padding-left: 3rem;    padding-right: 3rem; }
+  .pad-lr-3h { padding-left: 3.5rem; padding-right: 3.5rem; }
+  .pad-lr-4 { padding-left: 4rem;    padding-right: 4rem; }
+  .pad-lr-4h { padding-left: 4.5rem; padding-right: 4.5rem; }
+  .pad-lr-5 { padding-left: 5rem;    padding-right: 5rem; }
+  .pad-lr-5h { padding-left: 5.5rem; padding-right: 5.5rem; }
+  .pad-lr-6 { padding-left: 6rem;    padding-right: 6rem; }
+  .pad-lr-6h { padding-left: 6.5rem; padding-right: 6.5rem; }
+/*===========================================================================*/
+/* END PADDING
+/*===========================================================================*/

@@ -1,0 +1,108 @@
+{
+	"userName" : "superman",
+	"email" : "superman@superman.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "batman",
+	"email" : "batman@batman.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "spiderman",
+	"email" : "spiderman@spiderman.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "wolverine",
+	"email" : "wolverine@wolverine.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "ironman",
+	"email" : "ironman@ironman.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "daredevil",
+	"email" : "daredevil@daredevil.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "flash",
+	"email" : "flash@flash.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "deadpool",
+	"email" : "deadpool@deadpool.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}
+{
+	"userName" : "joker",
+	"email" : "joker@joker.com",
+	"password" : "$2a$10$JNG2SMuMZXvQkCuDC3kpdOHz.YAs7HIHytczZK/71Qjkan6EYixU2",
+	"firstName" : "Loc",
+	"lastName" : "Nguyen",
+	"active" : true,
+	"verify" : true,
+	"paid" : true,
+	"avatar" : "ariph",
+	"admin" : false
+}

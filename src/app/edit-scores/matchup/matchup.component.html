@@ -1,0 +1,37 @@
+<div class="matchup">
+            
+  <div class="time">{{game.gameTimeEastern | date: 'EEEE MMM d y - h:mm a'}} - Week {{game.weekNum}}</div>
+
+  <app-team
+    [type]="'score'"
+    [team]="'away'"
+    [_id]="game._id"
+    [abbr]="game.awayTeam"
+    [city]="game.awayCity"
+    [name]="game.awayName"
+    [spread]="game.awaySpreadDisplay"
+    [score]="game.awayScore"
+    [isPicked]="game.isAwayPicked"
+    [isDisabled]="game.isAwayDisabled"
+    [isGameStarted]="game.isGameStarted"
+    [teamControl]="control"
+  >
+  </app-team>
+
+  <app-team
+    [type]="'score'"
+    [team]="'home'"
+    [_id]="game._id"
+    [abbr]="game.homeTeam"
+    [city]="game.homeCity"
+    [name]="game.homeName"
+    [spread]="game.homeSpreadDisplay"
+    [score]="game.homeScore"
+    [isPicked]="game.isHomePicked"
+    [isDisabled]="game.isHomeDisabled"
+    [isGameStarted]="game.isGameStarted"
+    [teamControl]="control"
+  >
+  </app-team>
+
+</div>

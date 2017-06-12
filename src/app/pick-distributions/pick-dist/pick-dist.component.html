@@ -1,0 +1,16 @@
+<div class="pick-dist" [ngClass]="{'last': last}">
+          
+          <ul class="matchup clearfix">
+            <app-pd-away-team [pickDist]="pickDist"></app-pd-away-team>
+            <app-pd-home-team [pickDist]="pickDist"></app-pd-home-team>
+          </ul>
+          
+          <ng-container *ngIf="pickDist.isGameStarted">
+          
+            <app-pd-count [pickDist]="pickDist"></app-pd-count>
+            <app-pd-bar [pickDist]="pickDist"></app-pd-bar>
+            <app-pd-picker [pickDist]="pickDist"></app-pd-picker>
+          
+          </ng-container>
+
+        </div>

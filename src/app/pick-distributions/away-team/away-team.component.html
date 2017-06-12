@@ -1,0 +1,20 @@
+<li class="away-team-logo">
+              <img
+                src="../../assets/logo/{{pickDist.awayTeam | lowercase}}sml.jpg"
+                [alt]="pickDist.awayTeam"
+              />
+            </li>
+            <li class="away-team-name">
+              <span class="city">{{pickDist.awayCity}}</span>
+              <span class="name">{{pickDist.awayName}}</span>
+              <span class="abbr">{{pickDist.awayTeam}}</span>
+            </li>
+            <li
+              [ngClass]="{
+                win: pickDist.awayResult === 'win',
+                loss: pickDist.awayResult === 'loss',
+                push: pickDist.awayResult === 'push'
+              }"
+              class="away-team-spread">
+              {{pickDist.awaySpreadDisplay}}
+            </li>

@@ -1,0 +1,147 @@
+<ul [formGroup]="teamControl" class="team clearfix" [ngClass]="{'away-team': team === 'away'}">
+                  
+                  <li class="team-logo">
+                    <img
+                      src="../../assets/logo/{{abbr | lowercase}}sml.jpg"
+                      [alt]="abbr"
+                    />
+                  </li>
+                  
+                  <li class="team-name">
+                    <span class="city">{{city}}</span>
+                    <span class="name">{{name}}</span>
+                  </li>
+                  
+                  <li class="team-spread">{{spread}}</li>
+                  
+                  <li class="team-score">{{score}}</li>
+                  
+                  <ng-container *ngIf="type === 'pick'">
+                    <ng-container *ngIf="team === 'away' && spread !== ''">
+                      <li
+                        *ngIf="!isGameStarted"
+                        [ngClass]="{'picked': isPicked}"
+                        class="team-pick">
+                        <input
+                          #checkbox
+                          formControlName="isAwayPicked"
+                          type="checkbox"
+                          (change)="checkboxChanged(checkbox.checked, _id, abbr)"
+                          [checked]="isPicked"
+                          [id]="_id + abbr"
+                        />
+                        <label
+                          [attr.for]="_id + abbr"
+                          [ngClass]="{'limit-reached': isDisabled}"
+                        >{{abbr}}</label>
+                      </li>
+                    
+                      <li
+                        *ngIf="isGameStarted"
+                        [ngClass]="{'picked': isPicked}"
+                        class="team-pick game-started">
+                        <label>{{abbr}}</label>
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="team === 'away' && spread === ''">
+                      <li class="error">
+                        <i class="material-icons">error_outline</i>
+                        <span class="message">Spreads not entered, enter to make game available</span>
+                      </li>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="team === 'home' && spread !== ''">
+                      <li
+                        *ngIf="!isGameStarted"
+                        [ngClass]="{'picked': isPicked}"
+                        class="team-pick">
+                        <input
+                          #checkbox
+                          formControlName="isHomePicked"
+                          type="checkbox"
+                          (change)="checkboxChanged(checkbox.checked, _id, abbr)"
+                          [checked]="isPicked"
+                          [id]="_id + abbr"
+                        />
+                        <label
+                          [attr.for]="_id + abbr"
+                          [ngClass]="{'limit-reached': isDisabled}"
+                        >{{abbr}}</label>
+                      </li>
+                      
+                      <li
+                        *ngIf="isGameStarted"
+                        [ngClass]="{'picked': isPicked}"
+                        class="team-pick game-started">
+                        <label>{{abbr}}</label>
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="team === 'home' && spread === ''">
+                      <li class="error">
+                        <i class="material-icons">error_outline</i>
+                        <span class="message">Spreads not entered, enter to make game available</span>
+                      </li>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="type === 'score'">
+                    <ng-container *ngIf="team === 'away' && spread !== ''">
+                      <li class="team-score-input">
+                        <input
+                          formControlName="awayScore"
+                          type="number"
+                          min="0"
+                          step="1"
+                          [id]="_id + abbr"
+                        />
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="team === 'away' && spread === ''">
+                      <li class="error">
+                        <i class="material-icons">error_outline</i>
+                        <span class="message">Enter spreads to update score</span>
+                      </li>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="team === 'home' && spread !== ''">
+                      <li class="team-score-input">
+                        <input
+                          formControlName="homeScore"
+                          type="number"
+                          min="0"
+                          step="1"
+                          [id]="_id + abbr"
+                        />
+                      </li>
+                    </ng-container>
+                    <ng-container *ngIf="team === 'home' && spread === ''">
+                      <li class="error">
+                        <i class="material-icons">error_outline</i>
+                        <span class="message">Enter spreads to update score</span>
+                      </li>
+                    </ng-container>
+                  </ng-container>
+                  
+                  <ng-container *ngIf="type === 'spread'">
+                    <ng-container *ngIf="team === 'away'">
+                      <li class="team-score-input">
+                        <input
+                          formControlName="awaySpreadDisplay"
+                          type="text"
+                          [id]="_id + abbr"
+                        />
+                      </li>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="team === 'home'">
+                      <li class="team-score-input">
+                        <input
+                          formControlName="homeSpreadDisplay"
+                          type="text"
+                          [id]="_id + abbr"
+                        />
+                      </li>
+                    </ng-container>
+                  </ng-container>
+                  
+                </ul>

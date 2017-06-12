@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col s12">
+    
+    <form
+      materialize
+      *ngIf="avatars?.length > 0"
+      (ngSubmit)="saveAvatar()"
+      [formGroup]="avatarForm" 
+      class="change-avatar-form"
+    >
+    
+      <div class="row">
+        <div class="col s12 m10 offset-m1 l8 offset-l2">
+          
+          <h4 class="mar-bot-h">Change Avatar</h4>
+          <h6 class="mar-bot-3">Change your avatar below.</h6>
+    
+          <div class="avatar-container">
+            <ng-container *ngFor="let avatar of avatars; let i = index; trackBy: trackAvatars">
+              <label [attr.for]="avatar.avatar" class="avatar-con">
+                <input
+                  formControlName="avatar"
+                  type="radio"
+                  [value]="avatar.avatar"
+                  [id]="avatar.avatar"
+                />
+                <img
+                  src="../../assets/avatar/{{avatar.avatar | lowercase}}.jpg"
+                  [alt]="avatar.avatar"
+                  class="team-logo"
+                />
+              </label>
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="errorMsg">
+            <app-error-validation [errorMsg]="errorMsg"></app-error-validation>
+          </ng-container>
+          <ng-container *ngIf="successMsg">
+            <app-success-validation [successMsg]="successMsg"></app-success-validation>
+          </ng-container>
+          <!--<div *ngIf="successMsg" class="success">
+            <p class="text">{{successMsg}}</p>
+          </div>-->
+    
+          <button
+            #button
+            type="submit"
+            class="waves-effect waves-light btn-large btn-expand mar-top-3">
+            Change
+          </button>
+    
+        </div>
+      </div>
+    
+    </form>
+
+    <app-no-data
+      *ngIf="noData"
+      [errorMsg]="'Please add avatars to populate this page.'">
+    </app-no-data>
+    
+    <app-error-server *ngIf="error"></app-error-server>
+
+  </div>
+</div>

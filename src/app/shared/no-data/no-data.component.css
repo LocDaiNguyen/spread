@@ -1,0 +1,29 @@
+/*===========================================================================*/
+/* NO DATA */
+/*===========================================================================*/
+  .no-data {
+    margin-top: 1rem;
+    padding: 3rem 1rem;
+    border-left: .375rem solid #d50000;
+    background: white;
+    text-align: center;
+  }
+
+    .no-data .title {
+      margin-bottom: 1rem;
+      color: #d50000;
+    }
+
+      .no-data .no-data-container i {
+        position: relative;
+        top: .1875rem;
+        color: #d50000;
+      }
+      .no-data .no-data-container span {
+        position: relative;
+        top: -.25rem;
+        color: #d50000;
+      }
+/*===========================================================================*/
+/* END NO DATA */
+/*===========================================================================*/

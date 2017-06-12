@@ -1,0 +1,86 @@
+/*===========================================================================*/
+/* CHANGE AVATAR FORM */
+/*===========================================================================*/
+  .change-avatar-form {
+    margin-top: 1rem;
+    padding: 2rem;
+    background: white;
+    /*text-align: center;*/
+  }
+
+    .change-avatar-form .avatar-container {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+      .change-avatar-form .avatar-con {
+        display: inline-block;
+        width: 4rem;
+        margin: .25rem;
+      }
+
+        .change-avatar-form input[type=radio] {
+          position: absolute;
+          overflow: hidden;
+          clip: rect(1px, 1px, 1px, 1px);
+          width: 1px;
+          height: 1px;
+          margin: 0;
+        }
+
+        .change-avatar-form label .team-logo {
+          width: 4rem;
+          border: .25rem solid #eee;
+          -webkit-border-radius: 50%;
+                  border-radius: 50%;
+          background: rgba(255,255,255,.25);
+        }
+
+        .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #d50000;
+        }
+        .red .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #EE0000;
+        }
+        .red accent-4 .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #FF358B;
+        }
+        .purple .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #6563A4;
+        }
+        .blue .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #3333FF;
+        }
+        .skyblue .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #2FC2EF;
+        }
+        .green .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #99FF00;
+        }
+        .yellow .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid #FFD933;
+        }
+        .orange .change-avatar-form label input[type=radio]:checked + .team-logo {
+          border: .25rem solid orange;
+        }
+/*===========================================================================*/
+/* END CHANGE AVATAR FORM */
+/*===========================================================================*/
+
+
+
+/*===========================================================================*/
+/* SUCCESS */
+/*===========================================================================*/
+  .success {
+    padding: 1.5rem;
+    border-left: .375rem solid #4caf50;
+    background: #313131;
+  }
+
+    .success .text {
+      color: #4caf50;
+    }
+/*===========================================================================*/
+/* END SUCCESS */
+/*===========================================================================*/

@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col s12">
+
+    <form
+      materialize
+      (ngSubmit)="saveUser()"
+      [formGroup]="settingsForm"
+      class="account-form"
+    >
+
+      <div class="row">
+        <div class="col s12 m10 offset-m1 l8 offset-l2">
+
+          <h4 class="mar-bot-h">Account</h4>
+          <h6 class="mar-bot-3">Update your personal settings below.</h6>
+
+          <div class="input-field">
+            <input
+              formControlName="userName"
+              type="text"
+              id="userName"
+            />
+            <label for="userName">Username</label>
+            <!--<label [ngClass]="{'active': selectedUser?.userName}" for="userName">Username</label>-->
+          </div>
+          <p *ngIf="formErrors.userName" class="input-error-msg">{{formErrors.userName}}</p>
+          <p *ngIf="formSubmitted && !settingsForm.valid && settingsForm.controls['userName'].value === null" class="input-error-msg">Username required</p>
+
+          <div class="input-field">
+            <input
+              formControlName="email"
+              type="email"
+              id="email"
+            />
+            <label for="email">Email</label>
+            <!--<label [ngClass]="{'active': selectedUser?.email}" for="email">Email</label>-->
+          </div>
+          <p *ngIf="formErrors.email" class="input-error-msg">{{formErrors.email}}</p>
+          <p *ngIf="formSubmitted && !settingsForm.valid && settingsForm.controls['email'].value === null" class="input-error-msg">Email required</p>
+
+          <div class="input-field">
+            <input
+              formControlName="firstName"
+              type="text"
+              id="firstName"
+            />
+            <label for="firstName">First Name</label>
+            <!--<label [ngClass]="{'active': selectedUser?.firstName}" for="firstName">First Name</label>-->
+          </div>
+          <p *ngIf="formErrors.firstName" class="input-error-msg">{{formErrors.firstName}}</p>
+          <p *ngIf="formSubmitted && !settingsForm.valid && settingsForm.controls['firstName'].value === null" class="input-error-msg">First name required</p>
+        
+          <div class="input-field">
+            <input
+              formControlName="lastName"
+              type="text"
+              id="lastName"
+            />
+            <label for="lastName">Last Name</label>
+            <!--<label [ngClass]="{'active': selectedUser?.lastName}" for="lastName">Last Name</label>-->
+          </div>
+          <p *ngIf="formErrors.lastName" class="input-error-msg">{{formErrors.lastName}}</p>
+          <p *ngIf="formSubmitted && !settingsForm.valid && settingsForm.controls['lastName'].value === null" class="input-error-msg">Last name required</p>
+
+          <ng-container *ngIf="errorMsg">
+            <app-error-validation [errorMsg]="errorMsg"></app-error-validation>
+          </ng-container>
+          <ng-container *ngIf="successMsg">
+            <app-success-validation [successMsg]="successMsg"></app-success-validation>
+          </ng-container>
+
+          <button
+            #button
+            type="submit"
+            class="waves-effect waves-light btn-large btn-expand mar-top-3">
+            Sign Up
+          </button>
+
+        </div>
+      </div>
+
+    </form>
+
+    <app-error-server *ngIf="error"></app-error-server>
+
+  </div>
+</div>

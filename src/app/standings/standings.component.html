@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col s12">
+    
+    <div *ngIf="standingsVM?.length > 0" class="standings">
+      <ng-container *ngFor="let standing of standingsVM; let last = last; trackBy: trackStandings">
+        <app-s-standing [standing]="standing" [last]="last"></app-s-standing>      
+      </ng-container>
+    </div>
+
+    <app-no-data
+      *ngIf="noData"
+      [errorMsg]="'Please add games and users to populate this page.'">
+    </app-no-data>
+    
+    <app-error-server *ngIf="error"></app-error-server>
+
+  </div>
+</div>

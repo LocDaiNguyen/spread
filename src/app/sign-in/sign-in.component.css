@@ -1,0 +1,29 @@
+/*===========================================================================*/
+/* SIGN IN */
+/*===========================================================================*/
+.sign-in-bg {
+  background-image: url('../../assets/bg/nfl-bnw.jpg');
+  background-repeat: no-repeat;
+  background-color: white;
+  background-position: top center;
+  height: 100vh;
+}
+
+.sign-in {
+  /*background: white;*/
+  margin-top: 5rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  height: 29rem;
+}
+
+.sign-up {
+  background: #d50000;
+  margin-top: 1rem;
+  padding: 3rem;
+  height: 29rem;
+  text-align: center
+}
+/*===========================================================================*/
+/* END SIGN IN */
+/*===========================================================================*/

@@ -1,0 +1,89 @@
+/*===========================================================================*/
+/* USER INFO */
+/*===========================================================================*/
+.stats-user-info {
+  margin: 2rem 0 0;
+  padding: 2rem 1rem;
+  background: white;
+  text-align: center;
+}
+
+  .stats-user-info .user-image {
+    width: 10rem;
+    background: #eee;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+  }
+
+  .stats-user-info .user-name {
+    padding: 1rem 0;
+    font-size: 2rem;
+    white-space: nowrap;
+  }
+
+  .stats-user-info .user-trophy {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+  }
+
+    .stats-user-info .user-trophy li {
+      display: inline-block;
+    }
+
+    .stats-user-info .user-trophy .single-trophy {
+      width: auto;
+      height: 4rem;
+      margin: 0 .5rem;
+    }
+
+  .stats-user-info .no-trophy {
+    height: 5.25rem;
+    line-height: 5.25rem;
+  }
+
+.user-standing-point {
+  padding: 3rem 0 2.5rem;
+  background: #d50000;
+  text-align: center;
+}
+
+  .user-standing-point .u-data {
+    display: block;
+    font-size: 2.5rem;
+    color: #fff;
+  }
+
+  .user-standing-point .u-label {
+    display: block;
+    padding-top: 1rem;
+    color: #fff;
+    font-size: .875rem;
+    text-transform: uppercase;
+  }
+
+@media only screen and (max-width: 22.5em) {
+
+  .stats-user-info .user-image {
+    width: 9.375rem;
+  }
+
+  .stats-user-info .user-name {
+    font-size: 2rem;
+  }
+}
+
+@media only screen and (min-width: 22.5625rem) and (max-width: 24.1875em) {
+
+  .stats-user-info .user-image {
+    width: 10rem;
+  }
+
+  .stats-user-info .user-name {
+    font-size: 2.5rem;
+  }
+}
+/*===========================================================================*/
+/* END USER INFO */
+/*===========================================================================*/

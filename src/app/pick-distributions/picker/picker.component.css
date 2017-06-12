@@ -1,0 +1,26 @@
+/*===========================================================================*/
+/* PICK DISTS PICKER */
+/*===========================================================================*/
+        .username-left {
+          margin: .25rem .125rem .25rem 0;
+          padding: .25rem;
+          background: #f8f8f8;
+          font-size: .875rem;
+          text-align: center;
+        }
+
+        .username-right {
+          margin: .25rem 0 .25rem .125rem;
+          padding: .25rem;
+          background: #f8f8f8;
+          font-size: .875rem;
+          text-align: center;
+        }
+
+        .username-left.hide,
+        .username-right.hide {
+          display: none;
+        }
+/*===========================================================================*/
+/* END PICK DISTS PICKER */
+/*===========================================================================*/

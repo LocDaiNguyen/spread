@@ -1,0 +1,21 @@
+/*===========================================================================*/
+/* CHANGE PASSWORD FORM */
+/*===========================================================================*/
+  .change-password-form {
+    margin-top: 1rem;
+    padding: 2rem;
+    background: white;
+  }
+
+  .linkExst {
+    margin-top: 1rem;
+    padding: 4rem 1rem;
+    text-align: center;
+  }
+
+    .linkExst .title {
+      margin-bottom: 1rem;
+    }
+/*===========================================================================*/
+/* END CHANGE PASSWORD FORM */
+/*===========================================================================*/

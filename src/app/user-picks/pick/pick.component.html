@@ -1,0 +1,25 @@
+<ul
+          [ngClass]="{
+            win: pick.result === 'win',
+            loss: pick.result === 'loss',
+            push: pick.result === 'push'
+          }"
+          class="single-pick clearfix">
+        
+          <ng-container *ngIf="pick.pickedTeam">
+        
+            <ng-container *ngIf="pick.isGameStarted">
+              <app-pick-game-started [pick]="pick"></app-pick-game-started>
+            </ng-container>
+            
+            <ng-container *ngIf="!pick.isGameStarted">
+              <app-pick-game-not-started></app-pick-game-not-started>
+            </ng-container>
+
+          </ng-container>
+          
+          <ng-container *ngIf="!pick.pickedTeam">
+            <li class="pick-text">{{pick.pickNumber}}</li>
+          </ng-container>
+          
+        </ul>

@@ -1,0 +1,32 @@
+{ "abbr": "ARI", "divisionId": 8, "city": "Arizona", "name": "Cardinals" }
+{ "abbr": "ATL", "divisionId": 6, "city": "Atlanta", "name": "Falcons" }
+{ "abbr": "BAL", "divisionId": 1, "city": "Baltimore", "name": "Ravens" }
+{ "abbr": "BUF", "divisionId": 3, "city": "Buffalo", "name": "Bills" }
+{ "abbr": "CAR", "divisionId": 6, "city": "Carolina", "name": "Panthers" }
+{ "abbr": "CHI", "divisionId": 5, "city": "Chicago", "name": "Bears" }
+{ "abbr": "CIN", "divisionId": 1, "city": "Cincinnati", "name": "Bengals" }
+{ "abbr": "CLE", "divisionId": 1, "city": "Cleveland", "name": "Browns" }
+{ "abbr": "DAL", "divisionId": 7, "city": "Dallas", "name": "Cowboys" }
+{ "abbr": "DEN", "divisionId": 4, "city": "Denver", "name": "Broncos" }
+{ "abbr": "DET", "divisionId": 5, "city": "Detroit", "name": "Lions" }
+{ "abbr": "GB", "divisionId": 5, "city": "Green Bay", "name": "Packers" }
+{ "abbr": "HOU", "divisionId": 2, "city": "Houston", "name": "Texans" }
+{ "abbr": "IND", "divisionId": 2, "city": "Indianapolis", "name": "Colts" }
+{ "abbr": "JAX", "divisionId": 2, "city": "Jacksonville", "name": "Jaguars" }
+{ "abbr": "KC", "divisionId": 4, "city": "Kansas City", "name": "Chiefs" }
+{ "abbr": "MIA", "divisionId": 3, "city": "Miami", "name": "Dolphins" }
+{ "abbr": "MIN", "divisionId": 5, "city": "Minnesota", "name": "Vikings" }
+{ "abbr": "NE", "divisionId": 3, "city": "New England", "name": "Patriots" }
+{ "abbr": "NO", "divisionId": 6, "city": "New Orleans", "name": "Saints" }
+{ "abbr": "NYG", "divisionId": 7, "city": "New York", "name": "Giants" }
+{ "abbr": "NYJ", "divisionId": 3, "city": "New York", "name": "Jets" }
+{ "abbr": "OAK", "divisionId": 4, "city": "Oakland", "name": "Raiders" }
+{ "abbr": "PHI", "divisionId": 7, "city": "Philadelphia", "name": "Eagles" }
+{ "abbr": "PIT", "divisionId": 1, "city": "Pittsburgh", "name": "Steelers" }
+{ "abbr": "SD", "divisionId": 4, "city": "San Diego", "name": "Chargers" }
+{ "abbr": "SEA", "divisionId": 8, "city": "Seattle", "name": "Seahawks" }
+{ "abbr": "SF", "divisionId": 8, "city": "San Francisco", "name": "49ers" }
+{ "abbr": "LA", "divisionId": 8, "city": "Los Angeles", "name": "Rams" }
+{ "abbr": "TB", "divisionId": 6, "city": "Tampa Bay", "name": "Buccs" }
+{ "abbr": "TEN", "divisionId": 2, "city": "Tennessee", "name": "Titans" }
+{ "abbr": "WAS", "divisionId": 7, "city": "Washington", "name": "Redskins" }

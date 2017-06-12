@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col s12">
+
+    <ng-container *ngIf="linkExist">
+      <form
+        materialize
+        *ngIf="userId"
+        (ngSubmit)="savePassword()"
+        [formGroup]="passwordForm"
+        class="change-password-form">
+      
+        <div class="row">
+          <div class="col s12 m10 offset-m1 l8 offset-l2">
+      
+            <h4 class="mar-bot-h">Change Password</h4>
+            <h6 class="mar-bot-3">Change your password below. Make sure passwords match and are valid.</h6>
+            
+            <div class="input-field">
+              <input
+                formControlName="password"
+                type="password"
+                id="password"
+              />
+              <label for="password">Password</label>
+            </div>
+            <p *ngIf="formErrors.password" class="input-error-msg">{{formErrors.password}}</p>
+            <p *ngIf="formSubmitted && !passwordForm.valid && passwordForm.controls['password'].value === null" class="input-error-msg">Password required</p>
+            
+            <div class="input-field">
+              <input
+                formControlName="passwordConfirm"
+                (blur)="checkPasswordMatch(passwordForm.controls['password'].value, $event.target.value)"
+                type="password"
+                id="passwordConfirm"
+              />
+              <label for="passwordConfirm">Password Confirm</label>
+            </div>
+            <p *ngIf="formErrors.passwordConfirm" class="input-error-msg">{{formErrors.passwordConfirm}}</p>
+            <p *ngIf="passwordError && passwordForm.controls['passwordConfirm'].dirty" class="input-error-msg teal-text">Password match.</p>
+            <p *ngIf="!passwordError && passwordForm.controls['passwordConfirm'].touched && passwordForm.controls['passwordConfirm'].dirty" class="input-error-msg">Passwords do not match.</p>
+            <p *ngIf="formSubmitted && !passwordForm.valid && passwordForm.controls['passwordConfirm'].value === null" class="input-error-msg">Password confirm required</p>
+            
+            <ng-container *ngIf="errorMsg">
+              <app-error-validation [errorMsg]="errorMsg"></app-error-validation>
+            </ng-container>
+            
+            <button
+              #button
+              type="submit"
+              class="waves-effect waves-light btn-large btn-expand mar-top-3">
+              Change
+            </button>
+      
+          </div>
+        </div>
+      
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="!linkExist">
+      <div class="linkExsit">
+        <h4 class="title">Verification Not Found</h4>
+        <p>This link does not exist. sorry!</p>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

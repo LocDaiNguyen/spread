@@ -1,0 +1,15 @@
+<ul class="standing clearfix" [ngClass]="{'last': last}">
+          <li class="user-rank">{{standing.rank}}</li>
+          <li class="user-image-wrapper">
+            <img
+              [src]="'../../assets/avatar/' + standing.avatar + '.jpg'"
+              [alt]="standing.avatar"
+              class="user-image"
+            />
+          </li>
+          <li class="user-name-record">
+            <span class="user-name">{{standing.userName}}</span>
+            <span class="user-record">{{standing.wins}}-{{standing.losses}}-{{standing.pushs}}</span>
+          </li>
+          <li class="user-points">{{standing.points}}</li>
+        </ul>

@@ -1,0 +1,24 @@
+<div class="user-picks-all">
+  <div class="user-picks-all-title">All Picks</div>
+  <ng-container *ngFor="let pick of picks">
+    <ul
+      class="team-info clearfix"
+      [ngClass]="{
+        win: pick.result === 'win',
+        loss: pick.result === 'loss',
+        push: pick.result === 'push'
+      }">
+      <li class="team-logo">
+        <img src="../../../assets/logo/{{pick.pickedTeam | lowercase}}sml.jpg" alt="">
+      </li>
+      <li class="team-name">
+        <span class="city">{{pick.city}}</span>
+        <span class="name">{{pick.name}}</span>
+        <span class="abbr">{{pick.pickedTeam}}</span>
+      </li>
+      <li class="team-spread">{{pick.spread}}</li>
+      <li class="week-num">Wk {{pick.weekNum}}</li>
+      <li class="pick-result">{{pick.result}}</li>
+    </ul>
+  </ng-container>
+</div>

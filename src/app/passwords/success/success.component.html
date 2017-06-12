@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col s12">
+
+    <div class="success">
+      <div class="row">
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
+          <ng-container *ngIf="from === 'request'">
+            <h4 class="title">Successful</h4>
+            <p class="text">A password reset email have been sent to the email you submitted. Please check your email.</p>
+          </ng-container>
+          <ng-container *ngIf="from === 'reset'">
+            <h4 class="title">Successful</h4>
+            <p class="text">Your password have been changed. You can sign in following the link below</p>
+            <a
+              routerLink="/signin"
+              class="waves-effect waves-light btn-large">
+              Sign In
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

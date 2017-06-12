@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col s12">
+    <ng-container *ngIf="linkExist">
+      <div class="linkExist">
+        <h4 class="mar-bot-1">{{message}}</h4>
+        <p class="text">Your email have been verified and your account is now activiated. You can now sign in.</p>
+        <a
+          routerLink="signin"
+          class="waves-effect waves-light btn-large">
+          Sign In
+        </a>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!linkExist">
+      <div class="linkExist">
+        <h4 class="title">{{message}}</h4>
+        <p>This link does not exist. sorry!</p>
+      </div>
+    </ng-container>
+  </div>
+</div>

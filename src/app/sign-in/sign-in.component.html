@@ -1,0 +1,65 @@
+<div class="row sign-in-bg">
+  <div class="col s12 m8 offset-m2 l6 offset-l3">
+
+    <form
+      materialize
+      (ngSubmit)="signin()"
+      [formGroup]="signinForm"
+      class="sign-in"
+    >
+
+      <h4 class="mar-bot-2">Sign In</h4>
+
+      <p>Admin - username: ldn, password: aaaA1!</p>
+      <p>User - username: batman, password: aaaS2@</p>
+
+      <div class="input-field">
+        <input
+          formControlName="userNameOrEmail"
+          type="text"
+          id="userNameOrEmail"
+        />
+        <label for="userNameOrEmail">Username or Email</label>
+      </div>
+
+      <div class="input-field">
+        <input
+          formControlName="password"
+          type="password"
+          id="password"
+        />
+        <label for="password">Password</label>
+      </div>
+
+      <a routerLink="/passwords/request" class="red-text accent-4">Forgot Password</a>
+
+      <button
+        #button
+        type="submit"
+        class="waves-effect waves-light btn-large btn-expand mar-top-3 mar-bot-1">
+        Sign In
+      </button>
+
+      <ng-container *ngIf="errorMsg">
+        <app-error-validation [errorMsg]="errorMsg"></app-error-validation>
+      </ng-container>
+
+    </form>
+
+  </div>
+  <!--<div class="col s12 m6">
+
+    <div class="sign-up">
+
+      <h3 class="white-text mar-top-6">Sign Up</h3>
+
+      <a
+        routerLink="/signup"
+        class="waves-effect waves-light btn-large btn-expand white red-text mar-top-3">
+        Sign Up
+      </a>
+
+    </div>
+
+  </div>-->
+</div>

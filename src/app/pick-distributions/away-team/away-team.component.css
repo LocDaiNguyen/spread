@@ -1,0 +1,115 @@
+/*===========================================================================*/
+/* PICK DISTS AWAY TEAM */
+/*===========================================================================*/
+        li {
+          float: left;
+        }
+
+          .away-team-logo img {
+            display: block;
+            width: 3rem;
+            margin: 1rem 0 1rem 1rem;
+          }
+
+        .away-team-spread {
+          display: block;
+          width: 3.75rem;
+          font-size: 1.5rem;
+          line-height: 4.625rem;
+          text-align: center;
+          text-transform: uppercase;
+        }
+        .away-team-spread.win {
+          color: #33ff33;
+        }
+        .away-team-spread.loss {
+          color: #ee0000;
+        }
+        .away-team-spread.push {
+          color: orange;
+        }
+
+        .away-team-name {
+          width: 10rem;
+          padding: 1.5rem 0 1.5rem 1.5rem;
+          text-transform: uppercase;
+        }
+
+          .away-team-name .city {
+            display: block;
+            color: #888;
+            font-size: .75rem;
+            line-height: 1;
+          }
+
+          .away-team-name .name {
+            display: block;
+            font-size: 1.25rem;
+            line-height: 1;
+          }
+
+          .away-team-name .abbr {
+            display: none;
+            font-size: 1.25rem;
+            line-height: 1.75;
+          }
+
+
+  @media only screen and (min-width: 31.25em) and (max-width: 37.5em) {
+
+        .away-team-name {
+          width: 5rem;
+        }
+
+          .away-team-name .city,
+          .away-team-name .name {
+            display: none;
+          }
+
+          .away-team-name .abbr {
+            display: block;
+          }
+
+          .away-team-spread {
+            width: 5rem;
+          }
+  }
+
+  @media only screen and (max-width: 31.1875em) {
+
+        .away-team-name {
+          width: 0;
+        }
+
+          .away-team-name .city,
+          .away-team-name .name {
+            display: none;
+          }
+
+          .away-team-spread {
+            width: 5rem;
+          }
+  }
+
+  @media only screen and (max-width: 24.1875em) {
+
+        /*.away-team-logo {
+          width: 3rem;
+          height: 4rem;
+        }
+
+          .away-team-logo img {
+            width: 3rem;
+            margin: 1rem 0rem;
+          }*/
+
+        .away-team-spread {
+          width: 3rem;
+          font-size: 1.25rem;
+          line-height: 3;
+        }
+
+  }
+/*===========================================================================*/
+/* END PICK DISTS AWAY TEAM */
+/*===========================================================================*/

@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col s12 l4">
+    <ng-container *ngIf="userStanding">
+      <app-user-info
+        [userName]="userStanding.userName"
+        [avatar]="userStanding.avatar"
+        [rank]="userStanding.rank"
+        [points]="userStanding.points"
+        [rankText]="standingText"></app-user-info>
+    </ng-container>
+  </div>
+  <div class="col s12 l8">
+    <div class="total-points-weekly-wrapper">
+      <div class="total-points-weekly">
+        <ng-container *ngIf="userTotalPointsWeekly">
+          <ngx-charts-bar-vertical-stacked
+            [scheme]="colorScheme"
+            [results]="userTotalPointsWeekly"
+            [gradient]="gradient"
+            [barPadding]="barPadding"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel">
+          </ngx-charts-bar-vertical-stacked>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12 l4">
+    <div class="pad-2 white">
+      <div class="record">
+        <h5 class="center-align pad-tb-1">Overall</h5>
+        <p class="center-align">{{userRecord?.wins}}-{{userRecord?.losses}}-{{userRecord?.pushs}}</p>
+        <ng-container *ngIf="userPercentage">
+          <ngx-charts-gauge
+            [scheme]="colorScheme"
+            [results]="userPercentage"
+            [min]="0"
+            [max]="100"
+            [angleSpan]="240"
+            [startAngle]="-120"
+            [units]="'percent'"
+            [bigSegments]="1"
+            [smallSegments]="4"
+            [margin]="margin ? [96, 48, 96, 48] : null">
+          </ngx-charts-gauge>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 l4">
+    <div class="pad-2 white">
+      <div class="record">
+        <h5 class="center-align pad-tb-1">Favs</h5>
+        <p class="center-align">{{userFavRecord?.wins}}-{{userFavRecord?.losses}}-{{userFavRecord?.pushs}}</p>
+        <ng-container *ngIf="userFavPercentage">
+          <ngx-charts-gauge
+            [scheme]="colorScheme"
+            [results]="userFavPercentage"
+            [min]="0"
+            [max]="100"
+            [angleSpan]="240"
+            [startAngle]="-120"
+            [units]="'percent'"
+            [bigSegments]="1"
+            [smallSegments]="4"
+            [margin]="margin ? [96, 48, 96, 48] : null">
+          </ngx-charts-gauge>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col s12 l4">
+    <div class="pad-2 white">
+      <div class="record">
+        <h5 class="center-align pad-tb-1">Dogs</h5>
+        <p class="center-align">{{userDogRecord?.wins}}-{{userDogRecord?.losses}}-{{userDogRecord?.pushs}}</p>
+        <ng-container *ngIf="userDogPercentage">
+          <ngx-charts-gauge
+            [scheme]="colorScheme"
+            [results]="userDogPercentage"
+            [min]="0"
+            [max]="100"
+            [angleSpan]="240"
+            [startAngle]="-120"
+            [units]="'percent'"
+            [bigSegments]="1"
+            [smallSegments]="4"
+            [margin]="margin ? [96, 48, 96, 48] : null">
+          </ngx-charts-gauge>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <app-user-picks-all [picks]="userPicksVM"></app-user-picks-all>
+  </div>
+</div>

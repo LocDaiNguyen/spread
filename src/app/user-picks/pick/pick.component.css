@@ -1,0 +1,30 @@
+/*===========================================================================*/
+/* SINGLE PICK */
+/*===========================================================================*/
+.single-pick {
+      height: 76px;
+      margin: 0;
+      padding: 0;
+      border-top: .0625rem solid #eee;
+      list-style: none;
+    }
+
+      .single-pick .pick-text {
+        height: 5rem;
+        margin-left: 1rem;
+        font-size: 1.5rem;
+        line-height: 5rem;
+      }
+
+      .single-pick.win {
+        color: #33ff33;
+      }
+      .single-pick.loss  {
+        color: #ee0000;
+      }
+      .single-pick.push  {
+        color: orange;
+      }
+/*===========================================================================*/
+/* END SINGLE PICK */
+/*===========================================================================*/

@@ -1,0 +1,101 @@
+<div [formGroup]="control" [ngClass]="{'no-border': last}" class="single-user">
+
+      <div class="row">
+        <div class="col s12 l9">
+          <ul class="user-info clearfix">
+            <li class="user-avatar">
+              <img
+                src="../../assets/avatar/{{user.avatar | lowercase}}.jpg"
+                [alt]="user.avatar"
+                class="round-m"
+              />
+            </li>
+            <li class="user-username">
+              <span class="name">{{user.userName}}</span>
+              <span class="info">{{user.firstName}} {{user.lastName}} - {{user.email}}</span>
+            </li>
+          </ul>
+          <div class="row">
+            <div class="col s4">
+              <div class="user-switch">
+                Verify
+                <div class="switch">
+                  <label>
+                    No
+                    <input
+                      formControlName="verify"
+                      type="checkbox"
+                      [checked]="user.verify"
+                      disabled
+                    />
+                    <span class="lever"></span>
+                    Yes
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col s4">
+              <div class="user-switch">
+                Active
+                <div class="switch">
+                  <label>
+                    No
+                    <input
+                      formControlName="active"
+                      type="checkbox"
+                      [checked]="user.active"
+                    />
+                    <span class="lever"></span>
+                    Yes
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col s4">
+              <div class="user-switch">
+                Paid
+                <div class="switch">
+                  <label>
+                    No
+                    <input
+                      formControlName="paid"
+                      type="checkbox"
+                      [checked]="user.paid"
+                    />
+                    <span class="lever"></span>
+                    Yes
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 l3">
+          <div class="actions">
+            <a
+              (click)="openModal()"
+              class="waves-effect waves-light btn modal-trigger">
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="userModalActions">
+      <div class="modal-content center-align">
+        <h5 class="pad-top-2">Are you sure you want to delete user {{user.userName}}?</h5>
+      </div>
+      <div class="modal-footer center-align mar-bot-2">
+        <a
+          (click)="closeModal()"
+          class="waves-effect waves-light btn grey mar-top-1 mar-lr-h">
+          No
+        </a>
+        <a
+          (click)="deleteUser(user)"
+          class="waves-effect waves-light btn mar-top-1 mar-lr-h">
+          Yes
+        </a>
+      </div>
+    </div>

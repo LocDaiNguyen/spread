@@ -1,0 +1,88 @@
+/*===========================================================================*/
+/* SINGLE PICK */
+/*===========================================================================*/
+    li {
+      float: left;
+    }
+
+      .team-logo img {
+        display: block;
+        width: 3rem;
+        margin: 1.25rem 1.5rem 1.125rem;
+      }
+
+      .team-name {
+        /*width: 11.375rem;*/
+        padding: 1.5rem 0 0 0;
+        text-transform: uppercase;
+      }
+
+        .team-name .city {
+          display: block;
+          color: #888;
+          font-size: .75rem;
+          line-height: 1;
+        }
+
+        .team-name .name {
+          display: block;
+          font-size: 1.25rem;
+          line-height: 1;
+        }
+
+        .team-name .abbr {
+          display: none;
+          font-size: 1.25rem;
+          line-height: 1.75;
+        }
+
+      .team-spread {
+        float: right;
+        width: 6.625rem;
+        margin-bottom: 0;
+        font-size: 1.5rem;
+        line-height: 5rem;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .team-result {
+        float: right;
+        width: 5.625rem;
+        font-size: 1.5rem;
+        line-height: 5rem;
+        -webkit-transition: all 300ms ease-out;
+          -moz-transition: all 300ms ease-out;
+            -ms-transition: all 300ms ease-out;
+            -o-transition: all 300ms ease-out;
+                transition: all 300ms ease-out;
+        text-align: center;
+      }
+
+  @media only screen and (max-width: 22.4375em) {
+
+        .team-name .city,
+        .team-name .name {
+          display: none;
+        }
+
+        .team-name .abbr {
+          display: block;
+        }
+
+  }
+
+  @media only screen and (min-width: 37.5em) and (max-width: 43.75em) {
+
+        .team-name .city,
+        .team-name .name {
+          display: none;
+        }
+
+        .team-name .abbr {
+          display: block;
+        }
+  }
+/*===========================================================================*/
+/* END SINGLE PICK */
+/*===========================================================================*/
