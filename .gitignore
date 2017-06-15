@@ -47,3 +47,5 @@ Thumbs.db
 todo.html
 .env-dev
 server-dev.js
+server.js
+.env

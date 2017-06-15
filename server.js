@@ -19,6 +19,7 @@ const verifications = require('./server/routes/verifications');
 
 const app = express();
 mongoose.connect('localhost:27017/db_name_here');
+mongoose.connect('mongodb://username:password@ds129402.mlab.com:29402/spread');
 
 // Parsers for POST data
 app.use(bodyParser.json());
