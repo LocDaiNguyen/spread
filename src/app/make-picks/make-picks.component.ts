@@ -24,6 +24,7 @@ export class MakePicksComponent implements OnInit {
   makePicksForm: FormGroup;
   gamePicksVM: GamePickVM[];
   teams: Team[];
+  selectedWeekGames: Game[];
   userPrevPicks: Pick[];
   userPicksCount = 0;
   userPicksGameStartedCount = 0;
@@ -78,13 +79,20 @@ export class MakePicksComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$, picks$])
       .subscribe(
         payload => {
+          this.teams = payload[1];
           this.picksAllowed = this.getPicksAllowed(payload[0]);
           this.weekNum = this.getCurrentWeek(payload[2]);
-          this.gamePicksVM = this.getGamePicksVM(payload);
-          this.gamePicksVM = this.orderGamePicksVM(this.gamePicksVM);
-          this.userPrevPicks = this.getUserPrevPicks(payload[3]);
-          this.addMatchupToFormGroup(this.gamePicksVM, this.userPrevPicks);
-          this.manageGamePicksVMStateByPicksAllowed();
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
+            this.userPrevPicks = this.getUserPrevPicks(payload[3]);
+            this.userPicksCount = this.getUserPicksCount(this.selectedWeekGames, this.userPrevPicks);
+            this.userPicksGameStartedCount = this.getUserPicksGameStartedCount(this.selectedWeekGames, this.userPrevPicks);
+            this.gamePicksVM = this.mapGamePicksVM(this.teams, this.selectedWeekGames, this.userPrevPicks);
+            this.gamePicksVM = this.orderGamePicksVM(this.gamePicksVM);
+            this.addMatchupToFormGroup(this.gamePicksVM, this.userPrevPicks);
+            this.setGamePicksVMStateByPicksAllowed();
+          }
         },
         error => this.error = true
       );
@@ -94,9 +102,7 @@ export class MakePicksComponent implements OnInit {
 
   getPicksAllowed(settings: any): number {
 
-    if (settings.length === 0) {
-      return 5;
-    }
+    if (settings.length === 0) { return 5; }
 
     return settings[0].picksAllowed;
   }
@@ -105,48 +111,106 @@ export class MakePicksComponent implements OnInit {
 
   getCurrentWeek(games: any): number {
 
-    if (games.length === 0) {
-      return 1;
-    }
+    if (games.length === 0) { return 1; }
 
     return this.currentWeekService.getCurrentWeek(games);
   }
 
 
 
-  getGamePicksVM(payload: {}): GamePickVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
       payload[0].length === 0 // settings
       || payload[1].length === 0 // teams
       || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const settings: any = payload[0];
-    const teams: Team[] = payload[1];
-    const games: Game[] = this.getSelectedWeekGames(payload[2]);
-    const picks: Pick[] = this.getUserPrevPicks(payload[3]);
+    return false;
+  }
+
+
+
+  getSelectedWeekGames(games: Game[]): Game[] {
+
+    if (games.length === 0) { return []; }
+
+    return games.filter(game => game.weekNum === this.weekNum);
+  }
+
+
+
+  getUserPrevPicks(picks: Pick[]): Pick[] {
+
+    if (picks.length === 0) { return []; }
+
+    return picks.filter(pick => pick.weekNum === this.weekNum && pick.userId === this.userId);
+  }
+
+
+
+  getUserPicksCount(games: Game[], picks: Pick[]): number {
+
+    if (games.length === 0) { return 0; }
+
+    let userPicksCount = 0;
+
+    games.forEach(game => {
+
+      const userPick = picks.find(pick => pick.gameId === game._id);
+
+      if (userPick) {
+        userPicksCount ++;
+      }
+    });
+
+    return userPicksCount;
+  }
+
+
+
+  getUserPicksGameStartedCount(games: Game[], picks: Pick[]): number {
+
+    if (games.length === 0) { return 0; }
+
+    let userPicksGameStartedCount = 0;
+
+    games.forEach(game => {
+
+      const userPick = picks.find(pick => pick.gameId === game._id);
+
+      if (userPick) {
+
+        if (new Date(game.gameTimeEastern).getTime() < new Date().getTime()) {
+          userPicksGameStartedCount ++;
+        }
+      }
+    });
+    
+    return userPicksGameStartedCount;
+  }
+
+
+
+  mapGamePicksVM(teams: Team[], games: Game[], picks: Pick[]): GamePickVM[] {
+
+    if (games.length === 0) { return []; }
 
     const gamePicksVM: GamePickVM[] = games.map(game => {
 
-      const pick: Pick = picks.find(p => p.gameId === game._id);
+      const userPick: Pick = picks.find(pick => pick.gameId === game._id);
       const awayTeam: Team = teams.find(team => team.abbr === game.awayTeam);
       const homeTeam: Team = teams.find(team => team.abbr === game.homeTeam);
       let isHomePicked = false;
       let isAwayPicked = false;
       let isGameStarted = false;
 
-      if (pick) {
-        this.userPicksCount ++;
-        if (new Date(game.gameTimeEastern).getTime() < new Date().getTime()) {
-          this.userPicksGameStartedCount ++;
-        }
-        if (pick.pickedTeam === game.awayTeam) {
+      if (userPick) {
+        if (userPick.pickedTeam === game.awayTeam) {
           isAwayPicked = true;
-        } else if (pick.pickedTeam === game.homeTeam) {
+        } else if (userPick.pickedTeam === game.homeTeam) {
           isHomePicked = true;
         }
       }
@@ -196,33 +260,9 @@ export class MakePicksComponent implements OnInit {
 
 
 
-  getSelectedWeekGames(games: Game[]): Game[] {
-
-    if (games.length === 0) {
-      return [];
-    }
-
-    return games.filter(game => game.weekNum === this.weekNum);
-  }
-
-
-
-  getUserPrevPicks(picks: Pick[]): Pick[] {
-
-    if (picks.length === 0) {
-      return [];
-    }
-
-    return picks.filter(pick => pick.weekNum === this.weekNum && pick.userId === this.userId);
-  }
-
-
-
   orderGamePicksVM(gamePicksVM: GamePickVM[]): GamePickVM[] {
 
-    if (gamePicksVM.length === 0) {
-      return [];
-    }
+    if (gamePicksVM.length === 0) { return []; }
 
     const gamePicksVMSorted = gamePicksVM.sort((gameCurr, gameNext) => {
       return Date.parse(gameCurr.gameTimeEastern) - Date.parse(gameNext.gameTimeEastern);
@@ -237,7 +277,7 @@ export class MakePicksComponent implements OnInit {
 
     const control = <FormArray>this.makePicksForm.controls['games'];
 
-    gamePickVM.map(game => {
+    gamePickVM.forEach(game => {
 
       const pick: Pick = userPrevPicks.find(p => p.gameId === game._id);
       let isHomePicked = false;
@@ -288,7 +328,7 @@ export class MakePicksComponent implements OnInit {
 
 
 // VIEW INTERACTION STATE
-  manageGamePicksVMStateByPicksAllowed(): void {
+  setGamePicksVMStateByPicksAllowed(): void {
 
     if (this.userPicksCount >= this.picksAllowed) {
       this.gamePicksVM = this.gamePicksVM.map(game => {
@@ -325,32 +365,37 @@ export class MakePicksComponent implements OnInit {
   checkboxChanged(value: any): void {
 
     if (value.checked === true) {
-      this.manageGamePicksVMStateByCheckboxChanged(true, value.gameId, value.team);
+      this.setGamePicksVMStateByCheckboxChanged(true, value.gameId, value.team);
     } else {
-      this.manageGamePicksVMStateByCheckboxChanged(false, value.gameId, value.team);
+      this.setGamePicksVMStateByCheckboxChanged(false, value.gameId, value.team);
     }
   }
 
 
 
-  manageGamePicksVMStateByCheckboxChanged(picked: boolean, gameId: string, team: string): void {
+  setGamePicksVMStateByCheckboxChanged(picked: boolean, gameId: string, team: string): void {
 
     this.gamePicksVM = this.gamePicksVM.map(game => {
 
       if (game._id === gameId) {
+        
         if (game.awayTeam === team) {
+        
           game.isAwayPicked = picked;
-          this.manageUserPicksCountState(picked);
+          this.setUserPicksCountState(picked);
+        
           if (game.isHomePicked === true) {
             game.isHomePicked = false;
-            this.manageUserPicksCountState(false);
+            this.setUserPicksCountState(false);
           }
         } else if (game.homeTeam === team) {
+        
           game.isHomePicked = picked;
-          this.manageUserPicksCountState(picked);
+          this.setUserPicksCountState(picked);
+        
           if (game.isAwayPicked === true) {
             game.isAwayPicked = false;
-            this.manageUserPicksCountState(false);
+            this.setUserPicksCountState(false);
           }
         }
       }
@@ -363,14 +408,14 @@ export class MakePicksComponent implements OnInit {
 
 
 
-  manageUserPicksCountState = (picked) => {
+  setUserPicksCountState = (picked) => {
 
     if (picked === true) {
       this.userPicksCount ++;
-      this.manageGamePicksVMStateByPicksAllowed();
+      this.setGamePicksVMStateByPicksAllowed();
     } else {
       this.userPicksCount --;
-      this.manageGamePicksVMStateByPicksAllowed();
+      this.setGamePicksVMStateByPicksAllowed();
     }
   }
 
@@ -378,6 +423,8 @@ export class MakePicksComponent implements OnInit {
 
 // SUBMISSION
   savePicks(): void {
+
+    this.disableButtonForXTime(2000);
 
     if (!this.makePicksForm.dirty) {
       Materialize.toast('No changes to picks form', 8000, 'orange');
@@ -389,12 +436,13 @@ export class MakePicksComponent implements OnInit {
     const userDeletePicks: Pick[] = this.getUserDeletePicks(userCurrentPicks);
     const isGameStarted: boolean = this.isGameStartedInAnyOfUserCurrentPicks(userCurrentPicks);
 
-    this.renderer.setProperty(this.button.nativeElement, 'disabled', true);
-    setTimeout(() => this.renderer.setProperty(this.button.nativeElement, 'disabled', false), 2000);
-
-    if (userCurrentPicks.length === 0) {
+    if (userCurrentPicks.length === 0 && this.userPrevPicks.length > 0) {
+      this.deletePicks(this.userPrevPicks);
+      Materialize.toast('Picks UPDATED', 8000, 'teal');
       return;
     }
+
+    if (userCurrentPicks.length === 0) { return; }
 
     if ((this.userPicksGameStartedCount + userCurrentPicks.length) <= this.picksAllowed) {
       if (!isGameStarted) {
@@ -417,11 +465,9 @@ export class MakePicksComponent implements OnInit {
 
   mapPickValuesToPick(): Pick[] {
 
-    const mappedPicks: Pick[] = this.makePicksForm.controls['games'].value.map(game => {
+    const mappedPicksUnfiltered: Pick[] = this.makePicksForm.controls['games'].value.map(game => {
 
-      if (!game.isAwayPicked && !game.isHomePicked) {
-        return;
-      }
+      if (!game.isAwayPicked && !game.isHomePicked) { return; }
 
       if (game.isAwayPicked) {
         return {
@@ -438,12 +484,7 @@ export class MakePicksComponent implements OnInit {
       }
     });
 
-    const userCurrentPicks = mappedPicks.filter(pick => !!pick);
-
-    if (userCurrentPicks.length === 0 && this.userPrevPicks.length > 0) {
-      this.deletePicks(this.userPrevPicks);
-      Materialize.toast('Picks UPDATED', 8000, 'teal');
-    }
+    const userCurrentPicks = mappedPicksUnfiltered.filter(pick => !!pick);
 
     return userCurrentPicks;
   }
@@ -452,9 +493,7 @@ export class MakePicksComponent implements OnInit {
 
   getUserNewPicks(userCurrentPicks: Pick[]): Pick[] {
 
-    if (userCurrentPicks.length === 0) {
-      return [];
-    }
+    if (userCurrentPicks.length === 0) { return []; }
 
     const userCurrentPicksUnfiltered = userCurrentPicks.map(pick => {
 
@@ -463,23 +502,23 @@ export class MakePicksComponent implements OnInit {
       const currentTime: number = new Date().getTime();
       let alreadyPicked = false;
 
-      if (!game) {
-        return;
-      }
+      if (!game) { return; }
 
       if (gameTime < currentTime) {
+      
         // game already started, can't pick this game anymore
         return;
+      
       } else {
-        this.userPrevPicks.map(userPrevPick => {
+        
+        this.userPrevPicks.forEach(userPrevPick => {
           if (userPrevPick.pickedTeam === pick.pickedTeam) {
             alreadyPicked = true;
           }
           return;
         });
-        if (!alreadyPicked) {
-          return pick;
-        }
+
+        if (!alreadyPicked) { return pick; }
       }
 
       return;
@@ -494,9 +533,7 @@ export class MakePicksComponent implements OnInit {
 
   getUserDeletePicks(userCurrentPicks: Pick[]): Pick[] {
 
-    if (userCurrentPicks.length === 0) {
-      return [];
-    }
+    if (userCurrentPicks.length === 0) { return []; }
 
     const userCurrentPicksUnfiltered = this.userPrevPicks.map(prevPick => {
 
@@ -505,20 +542,18 @@ export class MakePicksComponent implements OnInit {
       const currentTime: number = new Date().getTime();
       let notPicked = true;
 
-      if (!game) {
-        return;
-      }
+      if (!game) { return; }
 
       if (gameTime > currentTime) {
-        userCurrentPicks.map(pick => {
+        
+        userCurrentPicks.forEach(pick => {
           if (prevPick.pickedTeam === pick.pickedTeam) {
             notPicked = false;
           }
           return;
         });
-        if (notPicked) {
-          return prevPick;
-        }
+        
+        if (notPicked) { return prevPick; }
       }
 
       return;
@@ -533,28 +568,22 @@ export class MakePicksComponent implements OnInit {
 
   isGameStartedInAnyOfUserCurrentPicks(userCurrentPicks: Pick[]): boolean {
 
-    if (userCurrentPicks.length === 0) {
-      return false;
-    }
+    if (userCurrentPicks.length === 0) { return false; }
 
     let isGameStarted = false;
 
-    userCurrentPicks.map(pick => {
+    userCurrentPicks.forEach(pick => {
 
       const game: Game = this.gamePicksVM.find(gamePickVM => gamePickVM._id === pick.gameId);
       const gameTime: number = new Date(game.gameTimeEastern).getTime();
       const currentTime: number = new Date().getTime();
 
-      if (!game) {
-        return;
-      }
+      if (!game) { return; }
 
       if (gameTime < currentTime) {
         // game already started, can't pick this game anymore
         isGameStarted = true;
       }
-
-      return;
     });
 
     return isGameStarted;
@@ -562,9 +591,16 @@ export class MakePicksComponent implements OnInit {
 
 
 
+  disableButtonForXTime(time: number): void {
+    this.renderer.setProperty(this.button.nativeElement, 'disabled', true);
+    setTimeout(() => this.renderer.setProperty(this.button.nativeElement, 'disabled', false), time);
+  }
+
+
+
   createPicks(userNewPicks: Pick[]): void {
 
-    userNewPicks.map(pick =>
+    userNewPicks.forEach(pick =>
       this.pickService.createPick(pick)
         .subscribe(
           createdPick => this.userPrevPicks.push(createdPick),
@@ -577,7 +613,7 @@ export class MakePicksComponent implements OnInit {
 
   deletePicks(userDeletePicks: Pick[]): void {
 
-    userDeletePicks.map(pick =>
+    userDeletePicks.forEach(pick =>
       this.pickService.deletePick(pick)
         .subscribe(
           deletedPick => this.userPrevPicks = this.userPrevPicks.filter(notDeletedPick =>
