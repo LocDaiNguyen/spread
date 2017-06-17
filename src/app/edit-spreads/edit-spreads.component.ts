@@ -24,12 +24,14 @@ export class EditSpreadsComponent implements OnInit {
 
   editSpreadsForm: FormGroup;
   gameSpreadsVM: GameSpreadVM[];
+  teams: Team[];
+  selectedWeekGames: Game[];
   weekNum: number;
   gamesHasUpdatedSpreadValue = false;
   gamesHasDiffSpreadValue = false;
   gamesHasSameSymbolValue = false;
   gamesHasMissingSymbolValue = false;
-  gameHasInvalidLastChar = false;
+  gamesHasInvalidLastChar = false;
   errorMsg: string;
   error = false;
   noData = false;
@@ -67,8 +69,15 @@ export class EditSpreadsComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$])
       .subscribe(
         payload => {
-          this.getCurrentWeek(payload);
-          // this.gameSpreadsVM = this.getGameSpreadsVM(payload);
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.teams = payload[1];
+            this.getCurrentWeek(payload[2]);
+            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
+            this.gameSpreadsVM = this.mapGameSpreadsVM(this.teams, this.selectedWeekGames);
+            this.gameSpreadsVM = this.orderGameSpreadsVM(this.gameSpreadsVM);
+            this.addSpreadToFormGroup(this.gameSpreadsVM);
+          }
         },
         error => this.error = true
       );
@@ -76,43 +85,50 @@ export class EditSpreadsComponent implements OnInit {
 
 
 
-  getCurrentWeek(payload) {
-
-    this.route.params
-      .subscribe((params: Params) => {
-        if (params['id'] === undefined) {
-          this.weekNum = this.currentWeekService.getCurrentWeek(payload[2]);
-        } else {
-          this.weekNum = +params['id'];
-        }
-        this.gameSpreadsVM = this.getGameSpreadsVM(payload);
-        this.gameSpreadsVM = this.orderGameSpreadsVM(this.gameSpreadsVM);
-        this.addSpreadToFormGroup(this.gameSpreadsVM);
-      });
-
-    // if (games.length === 0) {
-    //   return 1;
-    // }
-
-    // return this.currentWeekService.getCurrentWeek(games);
-  }
-
-
-
-  getGameSpreadsVM(payload): GameSpreadVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
       payload[0].length === 0 // settings
       || payload[1].length === 0 // teams
       || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const settings: any = payload[0];
-    const teams: Team[] = payload[1];
-    const games: Game[] = this.getSelectedWeekGames(payload[2]);
+    return false;
+  }
+
+
+
+  getCurrentWeek(games: any): void {
+
+    if (games.length === 0) { this.weekNum = 1; }
+
+    this.weekNum = this.currentWeekService.getCurrentWeek(games);
+
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          if (params['id'] !== undefined) { this.weekNum = +params['id']; }
+        },
+        error => this.error = true
+      );
+  }
+
+
+
+  getSelectedWeekGames(games: Game[]): Game[] {
+
+    if (games.length === 0) { return []; }
+
+    return games.filter(game => game.weekNum === this.weekNum);
+  }
+
+
+
+  mapGameSpreadsVM(teams: Team[], games: Game[]): GameSpreadVM[] {
+
+    if (games.length === 0) { return []; }
 
     const gameSpreadsVM: GameSpreadVM[] = games.map(game => {
 
@@ -153,22 +169,9 @@ export class EditSpreadsComponent implements OnInit {
 
 
 
-  getSelectedWeekGames(games: Game[]): Game[] {
-
-    if (games.length === 0) {
-      return [];
-    }
-
-    return games.filter(game => game.weekNum === this.weekNum);
-  }
-
-
-
   orderGameSpreadsVM(gameSpreadsVM: GameSpreadVM[]): GameSpreadVM[] {
 
-    if (gameSpreadsVM.length === 0) {
-      return [];
-    }
+    if (gameSpreadsVM.length === 0) { return []; }
 
     const gameSpreadsVMSorted = gameSpreadsVM.sort((gameCurr, gameNext) => {
       return Date.parse(gameCurr.gameTimeEastern) - Date.parse(gameNext.gameTimeEastern);
@@ -187,11 +190,11 @@ export class EditSpreadsComponent implements OnInit {
 
       control.push(
         this.formBuilder.group({
-          gameId: [null, Validators.required],
-          awayTeam: [null, Validators.required],
-          awaySpreadDisplay: [null, Validators.required],
-          homeTeam: [null, Validators.required],
-          homeSpreadDisplay: [null, Validators.required]
+          gameId: [game._id, Validators.required],
+          awayTeam: [game.awayTeam, Validators.required],
+          awaySpreadDisplay: [game.awaySpreadDisplay, Validators.required],
+          homeTeam: [game.homeTeam, Validators.required],
+          homeSpreadDisplay: [game.homeSpreadDisplay, Validators.required]
         })
       );
     });
@@ -210,15 +213,15 @@ export class EditSpreadsComponent implements OnInit {
     this.gamesHasDiffSpreadValue = false;
     this.gamesHasSameSymbolValue = false;
     this.gamesHasMissingSymbolValue = false;
-    this.gameHasInvalidLastChar = false;
+    this.gamesHasInvalidLastChar = false;
     const spreads: SpreadVM[] = this.editSpreadsForm.controls['games'].value;
     const controls: any = this.editSpreadsForm.controls['games'];
+    this.checkGameHasMissingSymbolValue(spreads);
+    this.checkGameHasSameSymbolValue(spreads);
+    this.checkGameHasInvalidLastChar(spreads);
+    this.checkGameHasDiffSpreadValue(spreads);
 
-    this.checkGameSpreadValue(spreads);
-
-    if (this.gamesHasMissingSymbolValue || this.gamesHasSameSymbolValue || this.gamesHasDiffSpreadValue || this.gameHasInvalidLastChar) {
-      return;
-    }
+    if (this.gamesHasMissingSymbolValue || this.gamesHasSameSymbolValue || this.gamesHasDiffSpreadValue || this.gamesHasInvalidLastChar) { return; }
 
     this.gameSpreadsVM = this.gameSpreadsVM.map((game, i) => {
 
@@ -261,21 +264,62 @@ export class EditSpreadsComponent implements OnInit {
 
 
 
-  checkGameSpreadValue(spreads: SpreadVM[]): void {
+  // checkGameSpreadValue(spreads: SpreadVM[]): void {
 
-    spreads.map(spread => {
+  //   spreads.map(spread => {
 
-      if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') {
-        return;
-      }
+  //     if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') {
+  //       return;
+  //     }
 
-      // if (Math.abs(parseFloat(spread.awaySpreadDisplay)) !== 0 && Math.abs(parseFloat(spread.homeSpreadDisplay)) !== 0) {
+  //     // if (Math.abs(parseFloat(spread.awaySpreadDisplay)) !== 0 && Math.abs(parseFloat(spread.homeSpreadDisplay)) !== 0) {
+
+  //     const awayTeamSymbol: string = spread.awaySpreadDisplay.charAt(0);
+  //     const homeTeamSymbol: string = spread.homeSpreadDisplay.charAt(0);
+  //     const awayLastChar: any = spread.awaySpreadDisplay.slice(-1);
+  //     const homeLastChar: any = spread.homeSpreadDisplay.slice(-1);
+  //     const regex = /^\d+$/;
+
+  //     if ((awayTeamSymbol !== '+' && awayTeamSymbol !== '-') || (homeTeamSymbol !== '+' && homeTeamSymbol !== '-')) {
+  //       this.gamesHasMissingSymbolValue = true;
+  //       Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} missing symbol or not correct symbol`, 8000, 'red accent-4');
+  //       return;
+  //     }
+
+  //     if (awayTeamSymbol === homeTeamSymbol) {
+  //       this.gamesHasSameSymbolValue = true;
+  //       Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} same symbol`, 8000, 'red accent-4');
+  //       return;
+  //     }
+
+  //     if (!regex.test(awayLastChar) || !regex.test(homeLastChar)) {
+  //       this.gamesHasInvalidLastChar = true;
+  //       Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} invalid last character`, 8000, 'red accent-4');
+  //       return;
+  //     }
+
+  //     // }
+
+  //     if (Math.abs(parseFloat(spread.awaySpreadDisplay)) !== Math.abs(parseFloat(spread.homeSpreadDisplay))) {
+  //       this.gamesHasDiffSpreadValue = true;
+  //       Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} different spread value`, 8000, 'red accent-4' );
+  //       return;
+  //     }
+
+  //     return;
+  //   });
+  // }
+
+
+
+  checkGameHasMissingSymbolValue(spreads: SpreadVM[]): void {
+
+    spreads.forEach(spread => {
+
+      if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') { return; }
 
       const awayTeamSymbol: string = spread.awaySpreadDisplay.charAt(0);
       const homeTeamSymbol: string = spread.homeSpreadDisplay.charAt(0);
-      const awayLastChar: any = spread.awaySpreadDisplay.slice(-1);
-      const homeLastChar: any = spread.homeSpreadDisplay.slice(-1);
-      const regex = /^\d+$/;
 
       if ((awayTeamSymbol !== '+' && awayTeamSymbol !== '-') || (homeTeamSymbol !== '+' && homeTeamSymbol !== '-')) {
         this.gamesHasMissingSymbolValue = true;
@@ -283,19 +327,60 @@ export class EditSpreadsComponent implements OnInit {
         return;
       }
 
+      return;
+    });
+  }
+
+
+
+  checkGameHasSameSymbolValue(spreads: SpreadVM[]): void {
+
+    spreads.forEach(spread => {
+
+      if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') { return; }
+
+      const awayTeamSymbol: string = spread.awaySpreadDisplay.charAt(0);
+      const homeTeamSymbol: string = spread.homeSpreadDisplay.charAt(0);
+
       if (awayTeamSymbol === homeTeamSymbol) {
         this.gamesHasSameSymbolValue = true;
         Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} same symbol`, 8000, 'red accent-4');
         return;
       }
 
+      return;
+    });
+  }
+
+
+
+  checkGameHasInvalidLastChar(spreads: SpreadVM[]): void {
+
+    spreads.forEach(spread => {
+
+      if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') { return; }
+
+      const awayLastChar: any = spread.awaySpreadDisplay.slice(-1);
+      const homeLastChar: any = spread.homeSpreadDisplay.slice(-1);
+      const regex = /^\d+$/;
+
       if (!regex.test(awayLastChar) || !regex.test(homeLastChar)) {
-        this.gameHasInvalidLastChar = true;
+        this.gamesHasInvalidLastChar = true;
         Materialize.toast(`${spread.awayTeam} ${spread.awaySpreadDisplay} vs ${spread.homeTeam} ${spread.homeSpreadDisplay} invalid last character`, 8000, 'red accent-4');
         return;
       }
 
-      // }
+      return;
+    });
+  }
+
+
+
+  checkGameHasDiffSpreadValue(spreads: SpreadVM[]): void {
+
+    spreads.forEach(spread => {
+
+      if (spread.awaySpreadDisplay === '' && spread.homeSpreadDisplay === '') { return; }
 
       if (Math.abs(parseFloat(spread.awaySpreadDisplay)) !== Math.abs(parseFloat(spread.homeSpreadDisplay))) {
         this.gamesHasDiffSpreadValue = true;
