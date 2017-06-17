@@ -25,6 +25,12 @@ import { CurrentWeekService } from '../core/services/current-week.service';
 export class PickDistributionsComponent implements OnInit {
 
   pickDistributionsVM: PickDistributionVM[];
+  teams: Team[];
+  games: Game[];
+  users: User[];
+  picks: Pick[];
+  selectedWeekGames: Game[];
+  selectedWeekPicks: Pick[];
   weekNum: number;
   error = false;
   noData = false;
@@ -60,8 +66,18 @@ export class PickDistributionsComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$, users$, picks$])
       .subscribe(
         payload => {
-          this.getCurrentWeek(payload);
-          // this.pickDistributionsVM = this.getPickDistributionsVM(payload);
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.teams = payload[1];
+            this.games = payload[2];
+            this.users = payload[3];
+            this.picks = payload[4];
+            this.getCurrentWeek(this.games);
+            this.selectedWeekGames = this.getSelectedWeekGames(this.games);
+            this.selectedWeekPicks = this.getSelectedWeekPicks(this.picks);
+            this.pickDistributionsVM = this.mapPickDistributionsVM(this.teams, this.selectedWeekGames, this.selectedWeekPicks, this.users);
+            this.pickDistributionsVM = this.orderGameScoresVM(this.pickDistributionsVM);
+          }
         },
         error => this.error = true
       );
@@ -69,44 +85,63 @@ export class PickDistributionsComponent implements OnInit {
 
 
 
-  getCurrentWeek(payload) {
-
-    this.route.params
-      .subscribe((params: Params) => {
-        if (params['id'] === undefined) {
-          this.weekNum = this.currentWeekService.getCurrentWeek(payload[2]);
-        } else {
-          this.weekNum = +params['id'];
-        }
-        this.pickDistributionsVM = this.getPickDistributionsVM(payload);
-        this.pickDistributionsVM = this.orderGameScoresVM(this.pickDistributionsVM);
-      });
-
-    // if (games.length === 0) {
-    //   return 1;
-    // }
-
-    // return this.currentWeekService.getCurrentWeek(games);
-  }
-
-
-
-  getPickDistributionsVM(payload): PickDistributionVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
       payload[0].length === 0 // settings
       || payload[1].length === 0 // teams
       || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const settings: any = payload[0];
-    const teams: Team[] = payload[1];
-    const users: User[] = payload[3];
-    const games: Game[] = payload[2].filter(game => game.weekNum === this.weekNum);
-    const picks: Pick[] = payload[4].filter(pick => pick.weekNum === this.weekNum);
+    return false;
+  }
+
+
+
+  getCurrentWeek(games: any): void {
+
+    if (games.length === 0) { this.weekNum = 1; }
+
+    this.weekNum = this.currentWeekService.getCurrentWeek(games);
+
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          if (params['id'] !== undefined) {
+            this.weekNum = +params['id'];
+            this.selectedWeekGames = this.getSelectedWeekGames(this.games);
+            this.selectedWeekPicks = this.getSelectedWeekPicks(this.picks);
+            this.pickDistributionsVM = this.mapPickDistributionsVM(this.teams, this.selectedWeekGames, this.selectedWeekPicks, this.users);
+            this.pickDistributionsVM = this.orderGameScoresVM(this.pickDistributionsVM);
+          }
+        },
+        error => this.error = true
+      );
+  }
+
+
+
+  getSelectedWeekGames(games: Game[]): Game[] {
+
+    if (games.length === 0) { return []; }
+
+    return games.filter(game => game.weekNum === this.weekNum);
+  }
+
+
+
+  getSelectedWeekPicks(picks: Pick[]): Pick[] {
+
+    if (picks.length === 0) { return []; }
+
+    return picks.filter(pick => pick.weekNum === this.weekNum);
+  }
+
+
+
+  mapPickDistributionsVM(teams: Team[], games: Game[], picks: Pick[], users: User[]): PickDistributionVM[] {
 
     const pickDistributionsVM: PickDistributionVM[] = games.map(game => {
 
@@ -179,9 +214,7 @@ export class PickDistributionsComponent implements OnInit {
 
   getHomeTeamPicks(picks: Pick[], game: Game): Pick[] {
 
-    if (picks.length === 0) {
-      return [];
-    }
+    if (picks.length === 0) { return []; }
 
     return picks.filter(pick => pick.gameId === game._id && pick.pickedTeam === game.homeTeam);
   }
@@ -190,9 +223,7 @@ export class PickDistributionsComponent implements OnInit {
 
   getAwayTeamPicks(picks: Pick[], game: Game): Pick[] {
 
-    if (picks.length === 0) {
-      return [];
-    }
+    if (picks.length === 0) { return []; }
 
     return picks.filter(pick => pick.gameId === game._id && pick.pickedTeam === game.awayTeam);
   }
@@ -201,17 +232,13 @@ export class PickDistributionsComponent implements OnInit {
 
   mapPickDistToPicksVM(picks: Pick[], users: User[]): {pickedTeam: string, userName: string}[] {
 
-    if (picks.length === 0) {
-      return [];
-    }
+    if (picks.length === 0) { return []; }
 
     const mappedPicksVM: {pickedTeam: string, userName: string}[] = picks.map(pick => {
 
       const user: User = users.find(u => u._id === pick.userId);
 
-      if (!user) {
-        user.userName = 'user does not exist';
-      }
+      if (!user) { user.userName = 'user does not exist'; }
 
       return {
         pickedTeam: pick.pickedTeam,
@@ -227,9 +254,7 @@ export class PickDistributionsComponent implements OnInit {
 
   orderGameScoresVM(pickDistributionsVM: PickDistributionVM[]): PickDistributionVM[] {
 
-    if (pickDistributionsVM.length === 0) {
-      return [];
-    }
+    if (pickDistributionsVM.length === 0) { return []; }
 
     const pickDistributionsVMSorted = pickDistributionsVM.sort((gameCurr, gameNext) => {
       return Date.parse(gameCurr.gameTimeEastern) - Date.parse(gameNext.gameTimeEastern);
