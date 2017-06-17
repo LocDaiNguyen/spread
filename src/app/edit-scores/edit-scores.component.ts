@@ -24,11 +24,13 @@ export class EditScoresComponent implements OnInit {
 
   editScoresForm: FormGroup;
   gameScoresVM: GameScoreVM[];
+  teams: Team[];
+  selectedWeekGames: Game[];
   weekNum: number;
   gamesHasUpdatedScoreValue = false;
-  gameHasNoSpread = false;
-  gameHasNegativeScore = false;
-  gameHasMissingScore = false;
+  gamesHasNoSpread = false;
+  gamesHasNegativeScore = false;
+  gamesHasMissingScore = false;
   errorMsg: string;
   error = false;
   noData = false;
@@ -66,8 +68,15 @@ export class EditScoresComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$])
       .subscribe(
         payload => {
-          this.getCurrentWeek(payload);
-          // this.gameScoresVM = this.getGameScoresVM(payload);
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.teams = payload[1];
+            this.getCurrentWeek(payload[2]);
+            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
+            this.gameScoresVM = this.mapGameScoresVM(this.teams, this.selectedWeekGames);
+            this.gameScoresVM = this.orderGameScoresVM(this.gameScoresVM);
+            this.addScoreToFormGroup(this.gameScoresVM);
+          }
         },
         error => this.error = true
       );
@@ -75,43 +84,50 @@ export class EditScoresComponent implements OnInit {
 
 
 
-  getCurrentWeek(payload) {
-
-    this.route.params
-      .subscribe((params: Params) => {
-        if (params['id'] === undefined) {
-          this.weekNum = this.currentWeekService.getCurrentWeek(payload[2]);
-        } else {
-          this.weekNum = +params['id'];
-        }
-        this.gameScoresVM = this.getGameScoresVM(payload);
-        this.gameScoresVM = this.orderGameScoresVM(this.gameScoresVM);
-        this.addScoreToFormGroup(this.gameScoresVM);
-      });
-
-    // if (games.length === 0) {
-    //   return 1;
-    // }
-
-    // return this.currentWeekService.getCurrentWeek(games);
-  }
-
-
-
-  getGameScoresVM(payload): GameScoreVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
       payload[0].length === 0 // settings
       || payload[1].length === 0 // teams
       || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const settings: any = payload[0];
-    const teams: Team[] = payload[1];
-    const games: Game[] = this.getSelectedWeekGames(payload[2]);
+    return false;
+  }
+
+
+
+  getCurrentWeek(games: any): void {
+
+    if (games.length === 0) { this.weekNum = 1; }
+
+    this.weekNum = this.currentWeekService.getCurrentWeek(games);
+
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          if (params['id'] !== undefined) { this.weekNum = +params['id']; }
+        },
+        error => this.error = true
+      );
+  }
+
+
+
+  getSelectedWeekGames(games: Game[]): Game[] {
+
+    if (games.length === 0) { return []; }
+
+    return games.filter(game => game.weekNum === this.weekNum);
+  }
+
+
+
+  mapGameScoresVM(teams: Team[], games: Game[]): GameScoreVM[] {
+
+    if (games.length === 0) { return []; }
 
     const gameScoresVM: GameScoreVM[] = games.map(game => {
 
@@ -155,22 +171,9 @@ export class EditScoresComponent implements OnInit {
 
 
 
-  getSelectedWeekGames(games: Game[]): Game[] {
-
-    if (games.length === 0) {
-      return [];
-    }
-
-    return games.filter(game => game.weekNum === this.weekNum);
-  }
-
-
-
   orderGameScoresVM(gameScoresVM: GameScoreVM[]): GameScoreVM[] {
 
-    if (gameScoresVM.length === 0) {
-      return [];
-    }
+    if (gameScoresVM.length === 0) { return []; }
 
     const gameScoresVMSorted = gameScoresVM.sort((gameCurr, gameNext) => {
       return Date.parse(gameCurr.gameTimeEastern) - Date.parse(gameNext.gameTimeEastern);
@@ -185,16 +188,16 @@ export class EditScoresComponent implements OnInit {
 
     const control = <FormArray>this.editScoresForm.controls['games'];
 
-    gameScoresVM.map(game => {
+    gameScoresVM.forEach(game => {
 
       control.push(
         this.formBuilder.group({
-          gameId: [null, Validators.required],
-          awayTeam: [null, Validators.required],
-          awaySpread: [null, Validators.required],
+          gameId: [game._id, Validators.required],
+          awayTeam: [game.awayTeam, Validators.required],
+          awaySpread: [game.awaySpread, Validators.required],
           awayScore: [null, Validators.required],
-          homeTeam: [null, Validators.required],
-          homeSpread: [null, Validators.required],
+          homeTeam: [game.homeTeam, Validators.required],
+          homeSpread: [game.homeSpread, Validators.required],
           homeScore: [null, Validators.required]
         })
       );
@@ -211,17 +214,17 @@ export class EditScoresComponent implements OnInit {
     }
 
     this.gamesHasUpdatedScoreValue = false;
-    this.gameHasNoSpread = false;
-    this.gameHasMissingScore = false;
-    this.gameHasNegativeScore = false;
+    this.gamesHasNoSpread = false;
+    this.gamesHasMissingScore = false;
+    this.gamesHasNegativeScore = false;
     const scores: ScoreVM[] = this.editScoresForm.controls['games'].value;
     const controls: any = this.editScoresForm.controls['games'];
+    console.log(scores);
+    this.checkGameHasNoSpread(scores);
+    this.checkGameHasMissingScore(scores);
+    this.checkGameHasNegativeScore(scores);
 
-    this.checkGameScoreValue(scores);
-
-    if (this.gameHasNoSpread || this.gameHasMissingScore || this.gameHasNegativeScore) {
-      return;
-    }
+    if (this.gamesHasNoSpread || this.gamesHasMissingScore || this.gamesHasNegativeScore) { return; }
 
     this.gameScoresVM = this.gameScoresVM.map((game, i) => {
 
@@ -264,26 +267,54 @@ export class EditScoresComponent implements OnInit {
 
 
 
-  checkGameScoreValue(scores: ScoreVM[]): void {
+  checkGameHasNoSpread(scores: ScoreVM[]): void {
 
-    scores.map(score => {
+    scores.forEach(score => {
 
       if (score.awayScore === null && score.homeScore === null) {
         return;
       }
 
       if (score.awaySpread === null || score.homeSpread === null) {
-        this.gameHasNoSpread = true;
+        this.gamesHasNoSpread = true;
         Materialize.toast(`${score.awayTeam} vs ${score.homeTeam} has no spread`, 8000, 'red accent-4');
       }
 
+      return;
+    });
+  }
+
+
+
+  checkGameHasMissingScore(scores: ScoreVM[]): void {
+
+    scores.forEach(score => {
+
+      if (score.awayScore === null && score.homeScore === null) {
+        return;
+      }
+
       if ((score.awayScore >= 0 && score.homeScore === null) || (score.awayScore == null && score.homeScore >= 0)) {
-        this.gameHasMissingScore = true;
+        this.gamesHasMissingScore = true;
         Materialize.toast(`${score.awayTeam} ${score.awayScore} vs ${score.homeTeam} ${score.homeScore} has missing score`, 8000, 'red accent-4');
       }
 
+      return;
+    });
+  }
+
+
+
+  checkGameHasNegativeScore(scores: ScoreVM[]): void {
+
+    scores.forEach(score => {
+
+      if (score.awayScore === null && score.homeScore === null) {
+        return;
+      }
+
       if (score.awayScore < 0 || score.homeScore < 0) {
-        this.gameHasNegativeScore = true;
+        this.gamesHasNegativeScore = true;
         Materialize.toast(`${score.awayTeam} ${score.awayScore} vs ${score.homeTeam} ${score.homeScore} has negative score`, 8000, 'red accent-4');
       }
 
@@ -294,6 +325,12 @@ export class EditScoresComponent implements OnInit {
 
 
   mapFormValuesToGameScoreVM(game: GameScoreVM, gameScore: ScoreVM): GameScoreVM {
+
+    // RESET RESULT
+    if (gameScore.awayScore === null && gameScore.homeScore === null) {
+      game.awayResult = ''
+      game.homeResult = ''
+    }
 
     // GET AWAY RESULT
     if (gameScore.awaySpread < 0 && gameScore.awayScore !== null) {
