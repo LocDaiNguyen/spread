@@ -42,7 +42,9 @@ export class AvatarFormComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.buildForm();
+    
     this.route.parent.data.subscribe(
       data => {
         this.avatar = data.user.avatar;
@@ -50,6 +52,7 @@ export class AvatarFormComponent implements OnInit {
         this.addAvatarToFormGroup(data.user.avatar);
       }
     );
+    
     this.getAllAvatars();
   }
 
