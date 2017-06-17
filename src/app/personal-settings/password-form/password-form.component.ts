@@ -44,11 +44,11 @@ export class PasswordFormComponent implements OnInit, AfterViewChecked {
 
 
   ngOnInit(): void {
+
     this.buildForm();
+
     this.route.parent.data.subscribe(
-      data => {
-        this.userId = data.user._id;
-      },
+      data => this.userId = data.user._id,
       error => this.error = true
     );
   }
