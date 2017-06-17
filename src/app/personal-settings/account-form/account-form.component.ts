@@ -60,10 +60,13 @@ export class AccountFormComponent implements OnInit, AfterViewChecked {
 
 
   ngOnInit() {
+    
     this.buildForm();
+    
     this.route.parent.data.subscribe(
       data => {
         this.user = data.user;
+        console.log(this.user);
         this.addUserToFormGroup(data.user);
       },
       error => this.error = true
@@ -74,17 +77,6 @@ export class AccountFormComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     this.formChanged();
-  }
-
-
-
-  addUserToFormGroup(user: User): void {
-    this.settingsForm.patchValue({
-      userName: user.userName,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName
-    });
   }
 
 
@@ -110,6 +102,18 @@ export class AccountFormComponent implements OnInit, AfterViewChecked {
         Validators.required,
         Validators.minLength(2)
       ]]
+    });
+  }
+
+
+
+  addUserToFormGroup(user: User): void {
+    
+    this.settingsForm.patchValue({
+      userName: user.userName,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName
     });
   }
 
