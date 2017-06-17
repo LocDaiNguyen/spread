@@ -50,7 +50,8 @@ export class AvatarFormComponent implements OnInit {
         this.avatar = data.user.avatar;
         this.userId = data.user._id;
         this.addAvatarToFormGroup(data.user.avatar);
-      }
+      },
+      error => this.error = true
     );
     
     this.getAllAvatars();
