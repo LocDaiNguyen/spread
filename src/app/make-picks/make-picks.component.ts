@@ -79,11 +79,11 @@ export class MakePicksComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$, picks$])
       .subscribe(
         payload => {
-          this.teams = payload[1];
-          this.picksAllowed = this.getPicksAllowed(payload[0]);
-          this.weekNum = this.getCurrentWeek(payload[2]);
           this.noData = this.isThereData(payload);
           if (!this.noData) {
+            this.teams = payload[1];
+            this.picksAllowed = this.getPicksAllowed(payload[0]);
+            this.weekNum = this.getCurrentWeek(payload[2]);
             this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
             this.userPrevPicks = this.getUserPrevPicks(payload[3]);
             this.userPicksCount = this.getUserPicksCount(this.selectedWeekGames, this.userPrevPicks);
@@ -96,6 +96,21 @@ export class MakePicksComponent implements OnInit {
         },
         error => this.error = true
       );
+  }
+
+
+
+  isThereData(payload: {}): boolean {
+
+    if (
+      payload[0].length === 0 // settings
+      || payload[1].length === 0 // teams
+      || payload[2].length === 0 // games
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
 
@@ -114,21 +129,6 @@ export class MakePicksComponent implements OnInit {
     if (games.length === 0) { return 1; }
 
     return this.currentWeekService.getCurrentWeek(games);
-  }
-
-
-
-  isThereData(payload: {}): boolean {
-
-    if (
-      payload[0].length === 0 // settings
-      || payload[1].length === 0 // teams
-      || payload[2].length === 0 // games
-    ) {
-      return true;
-    }
-
-    return false;
   }
 
 
