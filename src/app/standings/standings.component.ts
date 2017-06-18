@@ -70,9 +70,9 @@ export class StandingsComponent implements OnInit {
   isThereData(payload: {}): boolean {
 
     if (
-      payload[0].length === 0 // settings
-      || payload[1].length === 0 // teams
-      || payload[2].length === 0 // games
+      payload[0].length === 0 // games
+      || payload[1].length === 0 // users
+      || payload[2].length === 0 // picks
     ) {
       return true;
     }
@@ -86,7 +86,7 @@ export class StandingsComponent implements OnInit {
 
     const mappedStandingsVM: StandingVM[] = users.map(user => {
 
-      const userRecord: RecordVM = this.getUserRecord(user, picks, games);
+      const userRecord: RecordVM = this.getUserRecord(user._id, picks, games);
 
       return {
         _id: user._id,
@@ -104,15 +104,16 @@ export class StandingsComponent implements OnInit {
 
 
 
-  getUserRecord(user: User, picks: Pick[], games: Game[]): RecordVM {
+  getUserRecord(userId: string, picks: Pick[], games: Game[]): RecordVM {
 
-    const userPicks: Pick[] = picks.filter(pick => pick.userId === user._id);
+    const userPicks: Pick[] = picks.filter(pick => pick.userId === userId);
     let wins = 0;
     let losses = 0;
     let pushs = 0;
     let points = 0;
+    let percentage = 0;
 
-    if (userPicks.length === 0) { return {wins, losses, pushs, points}; }
+    if (userPicks.length === 0) { return {wins, losses, pushs, points, percentage}; }
 
     userPicks.forEach(pick => {
 
@@ -136,12 +137,14 @@ export class StandingsComponent implements OnInit {
         }
       }
 
-      points = wins + (pushs / 2);
-
       return;
     });
 
-    return {wins, losses, pushs, points};
+    points = wins + (pushs / 2);
+
+    percentage = (wins / (wins + losses)) * 100;
+
+    return {wins, losses, pushs, points, percentage};
   }
 
 
