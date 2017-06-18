@@ -24,6 +24,11 @@ import { CurrentWeekService } from '../core/services/current-week.service';
 export class UserPicksComponent implements OnInit {
 
   userInfoPicksVM: UserInfoPickVM[];
+  settings: any;
+  teams: Team[];
+  games: Game[];
+  users: User[];
+  picks: Pick[];
   picksAllowed: number;
   weekNum: number;
   error = false;
@@ -60,9 +65,18 @@ export class UserPicksComponent implements OnInit {
     Observable.forkJoin([settings$, teams$, games$, users$, picks$])
       .subscribe(
         payload => {
-          this.picksAllowed = this.getPicksAllowed(payload[0]);
-          this.getCurrentWeek(payload);
-          // this.userInfoPicksVM = this.getUserInfoPicksVM(payload);
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.settings = payload[0];
+            this.teams = payload[1];
+            this.games = payload[2];
+            this.users = payload[3];
+            this.picks = payload[4];
+            this.picksAllowed = this.getPicksAllowed(this.settings);
+            this.getCurrentWeek(this.games);
+            this.userInfoPicksVM = this.mapUserInfoPicksVM(this.teams, this.games, this.users, this.picks);
+            this.userInfoPicksVM = this.orderUserInfoPickVM(this.userInfoPicksVM);
+          }
         },
         error => this.error = true
       );
@@ -70,58 +84,58 @@ export class UserPicksComponent implements OnInit {
 
 
 
-  getPicksAllowed(settings: any): number {
-
-    if (settings.length === 0) {
-      return 5;
-    }
-
-    return settings[0].picksAllowed;
-  }
-
-
-
-  getCurrentWeek(payload) {
-
-    this.route.params
-      .subscribe((params: Params) => {
-        if (params['id'] === undefined) {
-          this.weekNum = this.currentWeekService.getCurrentWeek(payload[2]);
-        } else {
-          this.weekNum = +params['id'];
-        }
-        this.userInfoPicksVM = this.getUserInfoPicksVM(payload);
-        this.userInfoPicksVM = this.orderUserInfoPickVM(this.userInfoPicksVM);
-      });
-
-    // if (games.length === 0) {
-    //   return 1;
-    // }
-
-    // return this.currentWeekService.getCurrentWeek(games);
-  }
-
-
-
-  getUserInfoPicksVM(payload): UserInfoPickVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
       payload[0].length === 0 // settings
       || payload[1].length === 0 // teams
       || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const teams: Team[] = payload[1];
-    const games: Game[] = payload[2];
-    const users: User[] = payload[3];
-    const picks: Pick[] = payload[4];
+    return false;
+  }
+
+
+
+  getPicksAllowed(settings: any): number {
+
+    if (settings.length === 0) { return 5; }
+
+    return settings[0].picksAllowed;
+  }
+
+
+
+  getCurrentWeek(games: any): void {
+
+    if (games.length === 0) { this.weekNum = 1; }
+
+    this.weekNum = this.currentWeekService.getCurrentWeek(games);
+
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          if (params['id'] !== undefined) {
+            this.weekNum = +params['id'];
+            this.userInfoPicksVM = this.mapUserInfoPicksVM(this.teams, this.games, this.users, this.picks);
+            this.userInfoPicksVM = this.orderUserInfoPickVM(this.userInfoPicksVM);
+          }
+        },
+        error => this.error = true
+      );
+  }
+
+
+
+  mapUserInfoPicksVM(teams: Team[], games: Game[], users: User[], picks: Pick[]): UserInfoPickVM[] {
+
+    if (games.length === 0) { return []; }
 
     const userInfoPicksVM: UserInfoPickVM[] = users.map(user => {
 
-      const usersPicks: Pick[] = picks.filter(pick => pick.userId === user._id);
+      const usersPicks: Pick[] = picks.filter(pick => pick.userId === user._id && pick.weekNum === this.weekNum);
       let userPicksVM: any[] = [];
       let wins = 0;
       let losses = 0;
@@ -134,35 +148,31 @@ export class UserPicksComponent implements OnInit {
 
           const game: Game = games.find(g => g._id === pick.gameId);
           const team: Team = teams.find(t => t.abbr === pick.pickedTeam);
+          let isGameStarted = false;
+          let spread = '';
+          let result = '';
 
-          if (pick.weekNum === this.weekNum) {
-
-            let isGameStarted = false;
-            let spread = '';
-            let result = '';
-
-            if (pick.pickedTeam === game.awayTeam) {
-              spread = game.awaySpreadDisplay;
-              result = game.awayResult;
-            } else /* equals homeTeam */ {
-              spread = game.homeSpreadDisplay;
-              result = game.homeResult;
-            }
-
-            if (new Date(game.gameTimeEastern).getTime() < new Date().getTime()) {
-              isGameStarted = true;
-            }
-
-            userPicksVM.push({
-              pickId: pick._id,
-              pickedTeam: pick.pickedTeam,
-              city: team.city,
-              name: team.name,
-              spread: spread,
-              isGameStarted: isGameStarted,
-              result: result
-            });
+          if (pick.pickedTeam === game.awayTeam) {
+            spread = game.awaySpreadDisplay;
+            result = game.awayResult;
+          } else /* equals homeTeam */ {
+            spread = game.homeSpreadDisplay;
+            result = game.homeResult;
           }
+
+          if (new Date(game.gameTimeEastern).getTime() < new Date().getTime()) {
+            isGameStarted = true;
+          }
+
+          userPicksVM.push({
+            pickId: pick._id,
+            pickedTeam: pick.pickedTeam,
+            city: team.city,
+            name: team.name,
+            spread: spread,
+            isGameStarted: isGameStarted,
+            result: result
+          });
 
           if (pick.pickedTeam === game.awayTeam) {
             if (game.awayResult === 'win') {
@@ -182,13 +192,11 @@ export class UserPicksComponent implements OnInit {
             }
           }
 
-          points = wins + (pushs / 2);
-
           return pick;
-
         });
-
       }
+
+      points = wins + (pushs / 2);
 
       for (let i = (userPicksVM.length + 1); i <= this.picksAllowed; i++) {
         userPicksVM.push({pickNumber: 'Pick ' + i, isGameStarted: false});
@@ -213,19 +221,20 @@ export class UserPicksComponent implements OnInit {
 
   orderUserInfoPickVM(userInfoPicksVM: UserInfoPickVM[]): UserInfoPickVM[] {
 
-    if (userInfoPicksVM.length === 0) {
-      return [];
-    }
+    if (userInfoPicksVM.length === 0) { return []; }
 
     const userInfoPicksVMSorted = userInfoPicksVM.sort((userCurr, userNext) => {
+      
       const nameCurr = userCurr.userName.toUpperCase();
       const nameNext = userNext.userName.toUpperCase();
+      
       if (nameCurr < nameNext) {
         return - 1;
       }
       if (nameCurr > nameNext) {
         return 1;
       }
+      
       return 0;
     });
 
