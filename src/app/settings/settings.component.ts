@@ -58,9 +58,7 @@ export class SettingsComponent implements OnInit, AfterViewChecked {
     this.settingService.getAllSettings()
       .subscribe(
         settings => {
-          if (settings.length === 0) {
-            this.noData = true;
-          }
+          if (settings.length === 0) { this.noData = true; }
           this.settings = settings[0];
           this.settingsForm.patchValue({picksAllowed: settings[0].picksAllowed});
         },
@@ -85,9 +83,7 @@ export class SettingsComponent implements OnInit, AfterViewChecked {
 
   validatePicksAllowed(control: FormControl): any {
 
-    if (control.value < 1) {
-      return {minimum: {valid: false}};
-    }
+    if (control.value < 1) { return {minimum: {valid: false}}; }
     return null;
   }
 
