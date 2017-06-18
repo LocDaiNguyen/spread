@@ -21,17 +21,25 @@ import { RecordVM } from '../models/record.vm';
 export class StatsComponent implements OnInit {
 
   standingsVM: StandingVM[];
+  teams: Team[];
+  games: Game[];
+  users: User[];
+  picks: Pick[];
   standingText: any;
-  userStanding: any;
   userId: string;
+  userStanding: any;
   userRecord: any;
   userPercentage: any;
+  userFavPicks: any;
   userFavRecord: any;
   userFavPercentage: any;
+  userDogPicks: any;
   userDogRecord: any;
   userDogPercentage: any;
   userTotalPointsWeekly: any;
+  userPicks: any;
   userPicksVM: any;
+  userPicksWithResult: any;
   error = false;
   noData = false;
   // options
@@ -82,74 +90,55 @@ export class StatsComponent implements OnInit {
     Observable.forkJoin([teams$, games$, users$, picks$])
       .subscribe(
         payload => {
-          this.standingsVM = this.getStandingsVM(payload);
-          this.userStanding = this.standingsVM.find(standing => standing._id === this.userId);
-          this.standingText = this.getStandingText(this.userStanding);
-          this.userTotalPointsWeekly = this.getUserTotalPointsWeekly(this.userId, payload);
-          this.userRecord = this.getUserRecord(this.userId, payload[3], payload[1]);
-          this.userPercentage = this.getUserPecentage(this.userRecord);
-          this.userFavRecord = this.getUserFavRecord(this.userId, payload[3], payload[1]);
-          this.userFavPercentage = this.getUserFavPercentage(this.userFavRecord);
-          this.userDogRecord = this.getUserDogRecord(this.userId, payload[3], payload[1]);
-          this.userDogPercentage = this.getUserDogPercentage(this.userDogRecord);
-          this.userPicksVM = this.getUserPicksVM(this.userId, payload);
-          this.userPicksVM = this.orderUserPicksVM(this.userPicksVM);
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.teams = payload[0];
+            this.games = payload[1];
+            this.users = payload[2];
+            this.picks = payload[3];
+            this.standingsVM = this.mapStandingsVMWithoutRank(this.games, this.users, this.picks);
+            this.standingsVM = this.orderStandingsVM(this.standingsVM);
+            this.standingsVM = this.mapStandingsVMWithRank(this.standingsVM);
+            this.userStanding = this.getUserStanding(this.standingsVM);
+            this.standingText = this.getStandingText(this.userStanding);
+            this.userPicks = this.getUserPicks(this.userId, this.picks);
+            this.userPicksWithResult = this.getUserPicksWithResult(this.userPicks, this.games);
+            this.userTotalPointsWeekly = this.getUserTotalPointsWeekly(this.userId, this.userPicksWithResult);
+            this.userRecord = this.getUserRecord(this.userId, payload[3], payload[1]);
+            this.userPercentage = this.getUserPecentage(this.userRecord);
+            this.userFavPicks = this.getUserFavPicks(this.userPicks, this.games);
+            this.userFavRecord = this.getUserRecord(this.userId, this.userFavPicks, this.games);
+            this.userFavPercentage = this.getUserFavPercentage(this.userFavRecord);
+            this.userDogPicks = this.getUserDogPicks(this.userPicks, this.games);
+            this.userDogRecord = this.getUserRecord(this.userId, this.userDogPicks, this.games);
+            this.userDogPercentage = this.getUserDogPercentage(this.userDogRecord);
+            this.userPicksVM = this.getUserPicksVM(this.teams, this.games, this.userPicks);
+            this.userPicksVM = this.orderUserPicksVM(this.userPicksVM);
+          }
         },
         error => this.error = true
       );
   }
 
 
-// STANDINGS
-  getStandingsVM(payload: any): StandingVM[] {
+
+  isThereData(payload: {}): boolean {
 
     if (
-      payload[0].length === 0 //teams
+      payload[0].length === 0 // teams
       || payload[1].length === 0 // games
       || payload[2].length === 0 // users
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const games: Game[] = payload[1];
-    const users: User[] = payload[2];
-    const picks: Pick[] = payload[3];
-    const standingsWithOutRank: StandingVM[] = this.mapStandingsVM(users, picks, games);
-    const standingsWithOutRankOrdered: StandingVM[] = this.orderStandings(standingsWithOutRank);
-    let rank = 1;
-    let tieCount = 0;
-
-    const standingsWithRankOrdered: StandingVM[] = standingsWithOutRankOrdered.reduce((standings, currStander, index, array) => {
-
-      if (index === 0) {
-
-        currStander.rank = rank;
-
-      } else {
-
-        if (standings[standings.length - 1].points === currStander.points) {
-          rank = rank + tieCount;
-          tieCount ++;
-        } else {
-          rank = rank + 1 + tieCount;
-          tieCount = 0;
-        }
-
-        currStander.rank = rank;
-      }
-
-      standings.push(currStander);
-
-      return standings;
-    }, []);
-
-    return standingsWithRankOrdered;
+    return false;
   }
 
 
 
-  mapStandingsVM(users: User[], picks: Pick[], games: Game[]): StandingVM[] {
+// STANDINGS
+  mapStandingsVMWithoutRank(games: Game[], users: User[], picks: Pick[]): StandingVM[] {
 
     const mappedStandingsVM: StandingVM[] = users.map(user => {
 
@@ -171,11 +160,9 @@ export class StatsComponent implements OnInit {
 
 
 
-  orderStandings(standings: StandingVM[]): StandingVM[] {
+  orderStandingsVM(standings: StandingVM[]): StandingVM[] {
 
-    if (standings.length === 0) {
-      return [];
-    }
+    if (standings.length === 0) { return []; }
 
     const standingsSorted = standings.sort((standingCurr, standingNext) => {
 
@@ -199,7 +186,48 @@ export class StatsComponent implements OnInit {
 
 
 
+  mapStandingsVMWithRank(standingsVM: StandingVM[]): StandingVM[] {
+
+    let rank = 1;
+    let tieCount = 0;
+
+    const standingsVMWithRank: StandingVM[] = standingsVM.reduce((standings, currStander, index, array) => {
+
+      if (index === 0) {
+
+        currStander.rank = rank;
+
+      } else {
+
+        if (standings[standings.length - 1].points === currStander.points) {
+          rank = rank + tieCount;
+          tieCount ++;
+        } else {
+          rank = rank + 1 + tieCount;
+          tieCount = 0;
+        }
+
+        currStander.rank = rank;
+      }
+
+      standings.push(currStander);
+
+      return standings;
+    }, []);
+
+    return standingsVMWithRank;
+  }
+
+
+
+  getUserStanding(standingsVM: StandingVM[]): StandingVM {
+    return standingsVM.find(standing => standing._id === this.userId);
+  }
+
+
+
   getStandingText(userStanding: StandingVM): string {
+    
     if (userStanding.rank === 1) {
       return 'st';
     } else if (userStanding.rank === 2) {
@@ -214,9 +242,40 @@ export class StatsComponent implements OnInit {
 
 
 // USER TOTAL POINTS WEEKLY
-  getUserTotalPointsWeekly(userId: string, payload: any): any {
-    const userPicks = this.getUserPicks(userId, payload[3]);
-    const userPicksWithResult = this.getUserPicksWithResult(userPicks, payload[1]);
+  getUserPicks(userId: string, picks: Pick[]): Pick[] {
+    return picks.filter(pick => pick.userId === userId);
+  }
+
+
+
+  getUserPicksWithResult(userPicksWithResult: Pick[], games: Game[]): Pick[] {
+    
+    return userPicksWithResult.map(pick => {
+    
+      const game = games.find(g => g._id === pick.gameId);
+      let finalResult;
+    
+      if (pick.pickedTeam === game.awayTeam) {
+        finalResult = game.awayResult;
+      } else {
+        finalResult = game.homeResult;
+      }
+    
+      return {
+        _id: pick._id,
+        pickedTeam: pick.pickedTeam,
+        weekNum: pick.weekNum,
+        userId: pick.userId,
+        gameId: pick.gameId,
+        finalResult: finalResult
+      }
+    })
+  }
+
+
+
+  getUserTotalPointsWeekly(userId: string, userPicksWithResult: any): any {
+    
     const userTotalPointsWeekly = [
       { "name": "1", "series": [ { "name": this.userStanding.userName, "value": 0 } ] },
       { "name": "2", "series": [ { "name": this.userStanding.userName, "value": 0 } ] },
@@ -236,6 +295,7 @@ export class StatsComponent implements OnInit {
       { "name": "16", "series": [ { "name": this.userStanding.userName, "value": 0 } ] },
       { "name": "17", "series": [ { "name": this.userStanding.userName, "value": 0 } ] }
     ];
+    
     userPicksWithResult.forEach(pick => {
       if (pick.weekNum === 1) {
         if (pick.finalResult === 'win') {
@@ -599,35 +659,8 @@ export class StatsComponent implements OnInit {
         }
       }
     });
+
     return userTotalPointsWeekly;
-  }
-
-
-
-  getUserPicks(userId: string, picks: Pick[]): Pick[] {
-    return picks.filter(pick => pick.userId === userId);
-  }
-
-
-
-  getUserPicksWithResult(userPicks: Pick[], games: Game[]): any {
-    return userPicks.map(pick => {
-      const game = games.find(g => g._id === pick.gameId);
-      let finalResult;
-      if (pick.pickedTeam === game.awayTeam) {
-        finalResult = game.awayResult;
-      } else {
-        finalResult = game.homeResult;
-      }
-      return {
-        _id: pick._id,
-        pickedTeam: pick.pickedTeam,
-        weekNum: pick.weekNum,
-        userId: pick.userId,
-        gameId: pick.gameId,
-        finalResult: finalResult
-      }
-    })
   }
 
 
@@ -635,18 +668,16 @@ export class StatsComponent implements OnInit {
 // USER RECORD
   getUserRecord(userId: string, picks: Pick[], games: Game[]): RecordVM {
 
-    const userPicks = this.getUserPicks(userId, picks);
+    const userPicks: Pick[] = picks.filter(pick => pick.userId === userId);
     let wins = 0;
     let losses = 0;
     let pushs = 0;
     let points = 0;
     let percentage = 0;
 
-    if (userPicks.length === 0) {
-      return {wins, losses, pushs, points, percentage};
-    }
+    if (userPicks.length === 0) { return {wins, losses, pushs, points, percentage}; }
 
-    userPicks.map(pick => {
+    userPicks.forEach(pick => {
 
       const game: Game = games.find(g => g._id === pick.gameId);
 
@@ -688,18 +719,12 @@ export class StatsComponent implements OnInit {
 
 
 // USER FAV RECORD
-  getUserFavRecord(userId: string, picks: Pick[], games: Game[]): any {
-    const userPicks = this.getUserPicks(userId, picks);
-    const userPicksWithFavPicks = this.getUserFavPicks(userPicks, games);
-    const userFavRecord = this.getUserRecord(userId, userPicksWithFavPicks, games);
-    return userFavRecord;
-  }
+  getUserFavPicks(userPicks: Pick[], games: Game[]): Pick[] {
 
-
-
-  getUserFavPicks(userPicks: Pick[], games: Game[]): any {
     return userPicks.filter(pick => {
+
       const game = games.find(g => g._id === pick.gameId);
+
       if (pick.pickedTeam === game.awayTeam) {
         if (game.awaySpread < 0) {
           return pick;
@@ -721,18 +746,12 @@ export class StatsComponent implements OnInit {
 
 
 // USER DOG RECORD
-  getUserDogRecord(userId: string, picks: Pick[], games: Game[]): any {
-    const userPicks = this.getUserPicks(userId, picks);
-    const userPicksWithDogPicks = this.getUserDogPicks(userPicks, games);
-    const userDogRecord = this.getUserRecord(userId, userPicksWithDogPicks, games);
-    return userDogRecord;
-  }
-
-
-
   getUserDogPicks(userPicks: Pick[], games: Game[]): any {
+    
     return userPicks.filter(pick => {
+    
       const game = games.find(g => g._id === pick.gameId);
+    
       if (pick.pickedTeam === game.awayTeam) {
         if (game.awaySpread > 0) {
           return pick;
@@ -754,12 +773,8 @@ export class StatsComponent implements OnInit {
 
 
 // USER PICKS
-  getUserPicksVM(userId: string, payload: any): any {
+  getUserPicksVM(teams: Team[], games: Game[], userPicks: Pick[]): any {
 
-    const teams: Team[] = payload[0];
-    const games: Game[] = payload[1];
-    const picks: Pick[] = payload[3];
-    const userPicks: Pick[] = this.getUserPicks(userId, picks);
     let userPicksVM = userPicks.map(pick => {
 
       const game: Game = games.find(g => g._id === pick.gameId);
@@ -788,6 +803,7 @@ export class StatsComponent implements OnInit {
       };
 
     });
+
     return userPicksVM;
   }
 
@@ -795,9 +811,7 @@ export class StatsComponent implements OnInit {
 
   orderUserPicksVM(userPicksVM: any): any {
 
-    if (userPicksVM.length === 0) {
-      return [];
-    }
+    if (userPicksVM.length === 0) { return []; }
 
     const userPicksVMSorted = userPicksVM.sort((pickCurr, pickNext) => {
       return Date.parse(pickCurr.gameTimeEastern) - Date.parse(pickNext.gameTimeEastern);
@@ -808,9 +822,5 @@ export class StatsComponent implements OnInit {
 
 
 
-// ON SELECT
-  onSelect(event) {
-    console.log(event);
-  }
 
 }
