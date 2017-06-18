@@ -20,6 +20,9 @@ import { RecordVM } from '../models/record.vm';
 export class StandingsComponent implements OnInit {
 
   standingsVM: StandingVM[];
+  games: Game[];
+  users: User[];
+  picks: Pick[];
   error = false;
   noData = false;
 
@@ -47,61 +50,39 @@ export class StandingsComponent implements OnInit {
 
     Observable.forkJoin([games$, users$, picks$])
       .subscribe(
-        payload => this.standingsVM = this.getStandingsVM(payload),
+        payload => {
+          this.noData = this.isThereData(payload);
+          if (!this.noData) {
+            this.games = payload[0];
+            this.users = payload[1];
+            this.picks = payload[2];
+            this.standingsVM = this.mapStandingsVMWithoutRank(this.games, this.users, this.picks);
+            this.standingsVM = this.orderStandingsVM(this.standingsVM);
+            this.standingsVM = this.mapStandingsVMWithRank(this.standingsVM);
+          }
+        },
         error => this.error = true
       );
   }
 
 
 
-  getStandingsVM(payload): StandingVM[] {
+  isThereData(payload: {}): boolean {
 
     if (
-      payload[0].length === 0 // games
-      || payload[1].length === 0 // users
+      payload[0].length === 0 // settings
+      || payload[1].length === 0 // teams
+      || payload[2].length === 0 // games
     ) {
-      this.noData = true;
-      return [];
+      return true;
     }
 
-    const games: Game[] = payload[0];
-    const users: User[] = payload[1];
-    const picks: Pick[] = payload[2];
-    const standingsWithOutRank: StandingVM[] = this.mapStandingsVM(users, picks, games);
-    const standingsWithOutRankOrdered: StandingVM[] = this.orderStandings(standingsWithOutRank);
-    let rank = 1;
-    let tieCount = 0;
-
-    const standingsWithRankOrdered: StandingVM[] = standingsWithOutRankOrdered.reduce((standings, currStander, index, array) => {
-
-      if (index === 0) {
-
-        currStander.rank = rank;
-
-      } else {
-
-        if (standings[standings.length - 1].points === currStander.points) {
-          rank = rank + tieCount;
-          tieCount ++;
-        } else {
-          rank = rank + 1 + tieCount;
-          tieCount = 0;
-        }
-
-        currStander.rank = rank;
-      }
-
-      standings.push(currStander);
-
-      return standings;
-    }, []);
-
-    return standingsWithRankOrdered;
+    return false;
   }
 
 
 
-  mapStandingsVM(users: User[], picks: Pick[], games: Game[]): StandingVM[] {
+  mapStandingsVMWithoutRank(games: Game[], users: User[], picks: Pick[]): StandingVM[] {
 
     const mappedStandingsVM: StandingVM[] = users.map(user => {
 
@@ -131,11 +112,9 @@ export class StandingsComponent implements OnInit {
     let pushs = 0;
     let points = 0;
 
-    if (userPicks.length === 0) {
-      return {wins, losses, pushs, points};
-    }
+    if (userPicks.length === 0) { return {wins, losses, pushs, points}; }
 
-    userPicks.map(pick => {
+    userPicks.forEach(pick => {
 
       const game: Game = games.find(g => g._id === pick.gameId);
 
@@ -167,7 +146,7 @@ export class StandingsComponent implements OnInit {
 
 
 
-  orderStandings(standings: StandingVM[]): StandingVM[] {
+  orderStandingsVM(standings: StandingVM[]): StandingVM[] {
 
     if (standings.length === 0) {
       return [];
@@ -191,6 +170,40 @@ export class StandingsComponent implements OnInit {
     });
 
     return standingsSorted;
+  }
+
+
+
+  mapStandingsVMWithRank(standingsVM: StandingVM[]): StandingVM[] {
+
+    let rank = 1;
+    let tieCount = 0;
+
+    const standingsVMWithRank: StandingVM[] = standingsVM.reduce((standings, currStander, index, array) => {
+
+      if (index === 0) {
+
+        currStander.rank = rank;
+
+      } else {
+
+        if (standings[standings.length - 1].points === currStander.points) {
+          rank = rank + tieCount;
+          tieCount ++;
+        } else {
+          rank = rank + 1 + tieCount;
+          tieCount = 0;
+        }
+
+        currStander.rank = rank;
+      }
+
+      standings.push(currStander);
+
+      return standings;
+    }, []);
+
+    return standingsVMWithRank;
   }
 
 
