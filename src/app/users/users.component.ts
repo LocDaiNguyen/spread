@@ -52,10 +52,10 @@ export class UsersComponent implements OnInit {
       .subscribe(
         users => {
           if (users.length === 0) {
-            this.noData = true;
+            return this.noData = true;
           }
           this.users = this.orderUsers(users);
-          this.mapUsers(this.users);
+          this.addUserToFormGroup(this.users);
         },
         error => this.error = true
       );
@@ -65,19 +65,20 @@ export class UsersComponent implements OnInit {
 
   orderUsers(users: User[]): User[] {
 
-    if (users.length === 0) {
-      return [];
-    }
+    if (users.length === 0) { return []; }
 
     const usersSorted = users.sort((userCurr, userNext) => {
+      
       const nameCurr = userCurr.userName.toUpperCase();
       const nameNext = userNext.userName.toUpperCase();
+      
       if (nameCurr < nameNext) {
         return - 1;
       }
       if (nameCurr > nameNext) {
         return 1;
       }
+      
       return 0;
     });
 
@@ -86,32 +87,21 @@ export class UsersComponent implements OnInit {
 
 
 
-  mapUsers(users: User[]): void {
-
-    users.map(user => {
-      this.addUserToFormGroup(user._id, user.verify, user.active, user.paid);
-    });
-  }
-
-
-
-  addUserToFormGroup(
-    userId: string,
-    verify: boolean,
-    active: boolean,
-    paid: boolean
-  ): void {
+  addUserToFormGroup(users: User[]): void {
 
     const control = <FormArray>this.usersForm.controls['users'];
 
-    control.push(
-      this.formBuilder.group({
-        userId: [userId, Validators.required],
-        verify: [verify, Validators.required],
-        active: [active, Validators.required],
-        paid: [paid, Validators.required],
-      })
-    );
+    users.forEach(user => {
+      
+      control.push(
+        this.formBuilder.group({
+          userId: [user._id, Validators.required],
+          verify: [user.verify, Validators.required],
+          active: [user.active, Validators.required],
+          paid: [user.paid, Validators.required]
+        })
+      );
+    });
   }
 
 
@@ -150,9 +140,7 @@ export class UsersComponent implements OnInit {
 
       const control: any = this.usersForm.controls['users'];
 
-      if (!control.controls[i].dirty) {
-        return;
-      }
+      if (!control.controls[i].dirty) { return; }
 
       return {
         userId: user.userId,
@@ -163,7 +151,6 @@ export class UsersComponent implements OnInit {
     });
 
     const usersWithUpdatedValues = mappedUsers.filter(user => !!user);
-    console.log(usersWithUpdatedValues);
 
     return usersWithUpdatedValues;
   }
