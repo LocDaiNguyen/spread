@@ -108,7 +108,7 @@ export class UserPicksComponent implements OnInit {
 
 
 
-  getCurrentWeek(games: any): void {
+  getCurrentWeek(games: Game[]): void {
 
     if (games.length === 0) { this.weekNum = 1; }
 

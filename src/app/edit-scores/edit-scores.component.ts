@@ -25,6 +25,7 @@ export class EditScoresComponent implements OnInit {
   editScoresForm: FormGroup;
   gameScoresVM: GameScoreVM[];
   teams: Team[];
+  games: Game[];
   selectedWeekGames: Game[];
   weekNum: number;
   gamesHasUpdatedScoreValue = false;
@@ -71,8 +72,9 @@ export class EditScoresComponent implements OnInit {
           this.noData = this.isThereData(payload);
           if (!this.noData) {
             this.teams = payload[1];
-            this.getCurrentWeek(payload[2]);
-            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
+            this.games = payload[2]
+            this.getCurrentWeek(this.games);
+            this.selectedWeekGames = this.getSelectedWeekGames(this.games);
             this.gameScoresVM = this.mapGameScoresVM(this.teams, this.selectedWeekGames);
             this.gameScoresVM = this.orderGameScoresVM(this.gameScoresVM);
             this.addScoreToFormGroup(this.gameScoresVM);
@@ -99,7 +101,7 @@ export class EditScoresComponent implements OnInit {
 
 
 
-  getCurrentWeek(games: any): void {
+  getCurrentWeek(games: Game[]): void {
 
     if (games.length === 0) { this.weekNum = 1; }
 
@@ -109,6 +111,10 @@ export class EditScoresComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           if (params['id'] !== undefined) { this.weekNum = +params['id']; }
+          this.selectedWeekGames = this.getSelectedWeekGames(this.games);
+          this.gameScoresVM = this.mapGameScoresVM(this.teams, this.selectedWeekGames);
+          this.gameScoresVM = this.orderGameScoresVM(this.gameScoresVM);
+          this.addScoreToFormGroup(this.gameScoresVM);
         },
         error => this.error = true
       );

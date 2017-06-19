@@ -25,6 +25,7 @@ export class EditSpreadsComponent implements OnInit {
   editSpreadsForm: FormGroup;
   gameSpreadsVM: GameSpreadVM[];
   teams: Team[];
+  games: Game[];
   selectedWeekGames: Game[];
   weekNum: number;
   gamesHasUpdatedSpreadValue = false;
@@ -72,8 +73,9 @@ export class EditSpreadsComponent implements OnInit {
           this.noData = this.isThereData(payload);
           if (!this.noData) {
             this.teams = payload[1];
-            this.getCurrentWeek(payload[2]);
-            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
+            this.games = payload[2];
+            this.getCurrentWeek(this.games);
+            this.selectedWeekGames = this.getSelectedWeekGames(this.games);
             this.gameSpreadsVM = this.mapGameSpreadsVM(this.teams, this.selectedWeekGames);
             this.gameSpreadsVM = this.orderGameSpreadsVM(this.gameSpreadsVM);
             this.addSpreadToFormGroup(this.gameSpreadsVM);
@@ -100,7 +102,7 @@ export class EditSpreadsComponent implements OnInit {
 
 
 
-  getCurrentWeek(games: any): void {
+  getCurrentWeek(games: Game[]): void {
 
     if (games.length === 0) { this.weekNum = 1; }
 
@@ -110,6 +112,10 @@ export class EditSpreadsComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           if (params['id'] !== undefined) { this.weekNum = +params['id']; }
+          this.selectedWeekGames = this.getSelectedWeekGames(this.games);
+          this.gameSpreadsVM = this.mapGameSpreadsVM(this.teams, this.selectedWeekGames);
+          this.gameSpreadsVM = this.orderGameSpreadsVM(this.gameSpreadsVM);
+          this.addSpreadToFormGroup(this.gameSpreadsVM);
         },
         error => this.error = true
       );
@@ -186,7 +192,7 @@ export class EditSpreadsComponent implements OnInit {
 
     const control = <FormArray>this.editSpreadsForm.controls['games'];
 
-    gameSpreadsVM.map(game => {
+    gameSpreadsVM.forEach(game => {
 
       control.push(
         this.formBuilder.group({

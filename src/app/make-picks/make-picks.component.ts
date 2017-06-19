@@ -23,7 +23,10 @@ export class MakePicksComponent implements OnInit {
 
   makePicksForm: FormGroup;
   gamePicksVM: GamePickVM[];
+  settings: any;
   teams: Team[];
+  games: Game[];
+  picks: Pick[];
   selectedWeekGames: Game[];
   userPrevPicks: Pick[];
   userPicksCount = 0;
@@ -81,11 +84,14 @@ export class MakePicksComponent implements OnInit {
         payload => {
           this.noData = this.isThereData(payload);
           if (!this.noData) {
+            this.settings = payload[0];
             this.teams = payload[1];
-            this.picksAllowed = this.getPicksAllowed(payload[0]);
-            this.weekNum = this.getCurrentWeek(payload[2]);
-            this.selectedWeekGames = this.getSelectedWeekGames(payload[2]);
-            this.userPrevPicks = this.getUserPrevPicks(payload[3]);
+            this.games = payload[2];
+            this.picks = payload[3];
+            this.picksAllowed = this.getPicksAllowed(this.settings);
+            this.weekNum = this.getCurrentWeek(this.games);
+            this.selectedWeekGames = this.getSelectedWeekGames(this.games);
+            this.userPrevPicks = this.getUserPrevPicks(this.picks);
             this.userPicksCount = this.getUserPicksCount(this.selectedWeekGames, this.userPrevPicks);
             this.userPicksGameStartedCount = this.getUserPicksGameStartedCount(this.selectedWeekGames, this.userPrevPicks);
             this.gamePicksVM = this.mapGamePicksVM(this.teams, this.selectedWeekGames, this.userPrevPicks);
@@ -124,7 +130,7 @@ export class MakePicksComponent implements OnInit {
 
 
 
-  getCurrentWeek(games: any): number {
+  getCurrentWeek(games: Game[]): number {
 
     if (games.length === 0) { return 1; }
 
